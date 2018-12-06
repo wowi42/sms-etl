@@ -1,0 +1,29 @@
+subscription_map:
+  id:
+    type: string
+    required: true
+  subscriberPhoneNumber:
+    type: string
+    required: true
+  referenceDate:
+    type: string
+    required: true
+
+  typeOfSubscriber:
+    type: string
+  chpPhoneNumber:
+    type: string
+
+unsubscription_map:
+  id:
+    type: string
+  unsubscriptionType:
+    type: string
+
+  householdPhonenumber:
+    type: string
+    required: true
+
+api_call_id:
+  type: string
+  required: true

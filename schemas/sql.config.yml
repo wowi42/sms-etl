@@ -1,0 +1,23 @@
+connection_name:
+  type: string
+  required: true
+
+database_connection:
+  host:
+    type: string
+    required: true
+  user:
+    type: string
+    required: true
+  password:
+    type: string
+    required: true
+  port:
+    type: number
+    required: true
+  database_name:
+    type: string
+    required: true
+  dialect:
+    type: string
+    required: true

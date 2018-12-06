@@ -1,0 +1,26 @@
+
+name:
+  type: string
+  required: true
+
+requires_auth:
+  type: boolean
+  required: true
+
+api_authentication:
+  secret: # API_SECRET, APP_SECRET, CLIENT_SECRET, APP_PASSWORD
+    type: string
+  key: # API_KEY, APP_ID, CLIENT_ID, CLIENT_KEY
+    type: string
+  header: # Authorization, x-auth
+    type: string
+
+webhook:
+
+  uri:
+    type: string
+    required: true
+
+  method:
+    type: string
+    required: true

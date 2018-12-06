@@ -1,0 +1,13 @@
+subscription_map:
+  id: "ID"
+  subscriberPhoneNumber: "phone"
+  referenceDate: "refDate"
+  typeOfSubscriber: "household"
+  chpPhoneNumber: "clientPhone"
+
+unsubscription_map:
+  id: "Id"
+  unsubscriptionType: "household"
+  householdPhonenumber: "phone"
+
+api_call_id: "some-campaign-subscrption"

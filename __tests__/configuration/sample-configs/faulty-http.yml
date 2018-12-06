@@ -1,0 +1,8 @@
+name: 'Test Rest API'
+
+requires_auth: true
+
+api_authentication:
+  secret: 'some_api_secret'
+  key: 'some_api_key'
+  header: 'authorization'

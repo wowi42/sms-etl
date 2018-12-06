@@ -1,0 +1,9 @@
+connection_name: 'Test Connection'
+
+database_connection:
+  host: "127.0.0.1"
+  user: "test"
+  password: "test-password"
+  port: 8080
+  database_name: "sample_test_db"
+  dialect: "mssql"

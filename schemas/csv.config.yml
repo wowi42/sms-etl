@@ -1,0 +1,8 @@
+
+key:
+  type: string
+  required: true
+
+filepath:
+    type: string
+    required: true
