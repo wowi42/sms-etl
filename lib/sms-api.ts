@@ -23,7 +23,9 @@ export class SMSApi {
                     'Accept': 'application/json'
                 }
             });
+
             console.log('Performed subscription for ' + data.packet.subscriber_number); // should be a log
+
             return req.data;
         } catch (e) {
             throw e;

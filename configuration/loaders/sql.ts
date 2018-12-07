@@ -13,22 +13,9 @@ export interface DbConfig {
 
 export class SQLLoader {
 
-    private db:Database;
+    constructor(public readonly name:string, private readonly db:Database, private sql_file:string) { }
 
-    static async setup(name:string, dbConfig:DbConfig) {
-        const db = new SQLLoader(name, dbConfig);
-        await db.createDbConnection();
-
-        return db;
-    }
-
-    get database() {
-        return this.db;
-    }
-
-    private constructor(public readonly name:string, private readonly dbConfig:DbConfig) { }
-
-    private async createDbConnection() {
+/*     private async createDbConnection() {
         try {
             this.db = await Database.connect(this.name,
                 {
@@ -44,13 +31,13 @@ export class SQLLoader {
             console.log(`[SQLLoader] Could not connect to ${this.name}`); // should be a log (but only console)
             console.log('Error is', e);
         }
-    }
+    } */
 
     async loadData():Promise<any | null> {
         let sql;
 
         try {
-            sql = await File.reader(this.dbConfig.sql_file);
+            sql = await File.reader(this.sql_file);
         } catch (e) {
             console.log('[SQLLoader] Could not read SQL file'); // should be a log
             console.log(e); // should be a log

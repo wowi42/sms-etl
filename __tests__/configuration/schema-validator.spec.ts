@@ -2,7 +2,7 @@ import * as path from 'path';
 import {SchemaValidator, ConfigurationTypes} from '../../configuration/schema-validator';
 import Config from '../../configuration/system';
 
-const configsRoot = path.join(Config.rootUri, '__tests__', 'configuration', 'samples');
+const configsRoot = path.join(Config.rootUri, '__tests__', 'samples');
 
 const testConfigFilePaths = [
     {

@@ -92,7 +92,7 @@ export class DataExtractorLoader {
                 .forEach(requirement => {
                     const isValid = this.validators[requirement](data[ this._requirements[requirement] ]);
                     if (isValid) {
-                        dataset.push(data as any);
+                        dataset.push(data);
                     }
                 });
         });
@@ -155,12 +155,12 @@ export class DataExtractorLoader {
     transformUnsubscriptionData() {
         this.cleanUnsubscriptionData();
 
-        const unsubscriptionPackets:{ url:string; packet:UnsubscriptionRequestBody; }[] = [];
+/*         const unsubscriptionPackets:{ url:string; packet:UnsubscriptionRequestBody; }[] = [];
 
         for (let idx = 0; idx < this._dataset.length; idx++) {
             // const data = this._dataset[idx];
 
-            /* unsubscriptionPackets.push(
+            unsubscriptionPackets.push(
                 {
                     packet: {
                         campaign: this.campaign,
@@ -169,9 +169,9 @@ export class DataExtractorLoader {
                     },
                     url: `unsubscription/save/?ref_id=${data[this._requirements.id]}&ref_key=${this.apiCallId}`
                 }
-            ); */
+            );
         }
 
-        return unsubscriptionPackets;
+        return unsubscriptionPackets; */
     }
 }
