@@ -1,0 +1,15 @@
+name: 'Test Rest API'
+
+requires_auth: true
+
+api_authentication:
+  secret: # API_SECRET, APP_SECRET, CLIENT_SECRET, APP_PASSWORD
+    value: 'some_api_secret'
+    header: 'Authorization'
+  key: # API_KEY, APP_ID, CLIENT_ID, CLIENT_KEY
+    value: 'some_api_key'
+    header: 'x-auth-id'
+
+webhook:
+  uri: 'https://sample.org/some/endpoint'
+  method: 'GET'

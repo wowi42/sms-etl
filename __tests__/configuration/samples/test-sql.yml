@@ -7,3 +7,5 @@ database_connection:
   port: 8080
   database_name: "sample_test_db"
   dialect: "mssql"
+
+sqlfile: "/some/absolute/path/to/sql/file"

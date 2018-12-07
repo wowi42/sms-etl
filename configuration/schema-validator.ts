@@ -12,7 +12,8 @@ export const enum ConfigurationTypes {
     SQL = 'sql database',
     CSV = 'csv file',
     HTTP = 'http webhook',
-    EXTRATOR = 'data extraction'
+    SUBSCRIPTION = 'subscription data extraction',
+    UNSUBSCRIPTION = 'un-subscription data extraction',
 }
 
 export interface Configuration {
@@ -46,7 +47,8 @@ export class SchemaValidator {
                             [ConfigurationTypes.CSV]: path.join(Config.rootUri, 'schemas', 'csv.config.yml'),
                             [ConfigurationTypes.SQL]: path.join(Config.rootUri, 'schemas', 'sql.config.yml'),
                             [ConfigurationTypes.HTTP]: path.join(Config.rootUri, 'schemas', 'http.config.yml'),
-                            [ConfigurationTypes.EXTRATOR]: path.join(Config.rootUri, 'schemas', 'extractor.config.yml'),
+                            [ConfigurationTypes.SUBSCRIPTION]: path.join(Config.rootUri, 'schemas', 'subscription.config.yml'),
+                            [ConfigurationTypes.UNSUBSCRIPTION]: path.join(Config.rootUri, 'schemas', 'unsubscription.config.yml'),
                         }[config.type]
                     });
 

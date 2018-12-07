@@ -1,0 +1,8 @@
+unsubscription_map:
+  id: "Id"
+  unsubscriptionType: "household"
+  householdPhonenumber: "phone"
+
+api_call_id: "some-campaign-subscrption"
+
+campaign: 23

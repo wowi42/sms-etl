@@ -21,3 +21,7 @@ database_connection:
   dialect:
     type: string
     required: true
+
+sqlfile:
+  type: string
+  required: true
