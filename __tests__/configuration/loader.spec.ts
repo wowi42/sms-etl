@@ -59,6 +59,7 @@ test('Should Get SQL Loader array', async () => {
 
             const sqlLoader = new SQLLoader(loaderName, db, sqlFile);
             expect(sqlLoader.name).toBe(loaderName);
+            // expect
         }
     }
 
