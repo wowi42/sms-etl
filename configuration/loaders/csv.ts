@@ -3,15 +3,20 @@ import {File} from '../../lib/file';
 
 export class CSVLoader {
 
-    private readonly fileStream:ReadStream;
+    private data:any;
 
-    static async setup(name:string, filepath:string) {
-        const loader = new CSVLoader(name, filepath);
-        return await File.csv(loader.fileStream);
+    get loadedData() {
+        return this.data;
     }
 
-    private constructor(public readonly name:string, readonly filepath:string) {
-        this.fileStream = createReadStream(filepath);
+    private constructor(
+        public readonly name:string,
+        private readonly filestream:ReadStream,
+        private readonly Reader:File
+    ) { }
+
+    async load() {
+        this.data = await this.Reader.csv(this.filestream);
     }
 
 }

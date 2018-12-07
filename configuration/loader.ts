@@ -1,7 +1,8 @@
-import {DbConfig, SQLLoader} from './loaders/sql';
+import {SQLLoader} from './loaders/sql';
 import {HttpConfig, HTTPLoader} from './loaders/http';
 import {CSVLoader} from './loaders/csv';
-import { Database } from '../lib/db';
+import {Database} from '../lib/db';
+import {File} from '../lib/file';
 
 export interface SqlSetupConfig {
     name:string;
@@ -11,22 +12,36 @@ export interface SqlSetupConfig {
 
 class ConfigurationLoader {
 
-    sql(configs:SqlSetupConfig[]) {
-        return Promise.all(configs.map(
-                async (config) => await new SQLLoader(config.name, config.db, config.sqlFilePath)
-            ));
+    /**
+     * creates an object holding all sql loader class objects
+     * @param {SqlSetupConfig[]} configs - sql database configuration for intializing the SQLLoader class
+     */
+    async sql(configs:SqlSetupConfig[]) {
+        const queryHelper = {};
+
+        for (let idx = 0; idx < configs.length; idx++) {
+            const config = configs[idx];
+
+            const sqlLoader = await new SQLLoader(config.name, config.db, config.sqlFilePath);
+            queryHelper[sqlLoader.name] = sqlLoader.loadData;
+        }
+
+        return queryHelper;
     }
 
-    csv(csvConfig:{name:string, filepath:string}[]) {
-        return Promise.all(csvConfig.map(async (config) =>
-                await CSVLoader.setup(config.name, config.filepath)
-            ));
-    }
+    /**
+     * creates an object oj ajax ready requests
+     * @param {HttpConfig[]} httpConfig - http webhook configuration
+     */
+    async http(httpConfig:HttpConfig[]) {
+        const httpConnections = {};
 
-    http(name:string, httpConfig:HttpConfig[]) {
-        return Promise.all(httpConfig.map(async (config) =>
-                await HTTPLoader.setup(name, config, [])
-            ));
+        for (let idx = 0; idx < httpConfig.length; idx++) {
+            const config = httpConfig[idx];
+            httpConnections[config.name] = await HTTPLoader.setup(config, []);
+        }
+
+        return httpConnections;
     }
 
 }

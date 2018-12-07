@@ -69,7 +69,7 @@ export class Database {
         }
     }
 
-    private async disconnect() {
+    public async disconnect() {
         try {
             if (this.connection) {
                 return await this.connection.close().then(v => {

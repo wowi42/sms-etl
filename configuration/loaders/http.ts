@@ -14,6 +14,7 @@ export interface HttpAuth {
 }
 
 export interface HttpConfig {
+    name:string;
     requires_auth:boolean;
     api_authentication?:HttpAuth;
     webhook: {
@@ -26,17 +27,21 @@ export class HTTPLoader {
 
     private apiClient:AxiosInstance;
 
-    static setup(name:string, httpConfig:HttpConfig, func:AxiosTransformer[]) {
-        const httpLoader = new HTTPLoader(name, httpConfig);
+    public readonly name:string;
+
+    static setup(httpConfig:HttpConfig, func:AxiosTransformer[]) {
+        const httpLoader = new HTTPLoader(httpConfig);
         httpLoader.setupApiClient(func);
 
         return httpLoader;
     }
 
-    private constructor(public readonly name:string, private readonly httpConfig:HttpConfig) {}
+    private constructor(private readonly httpConfig:HttpConfig) {
+        this.name = httpConfig.name;
+    }
 
     private setupApiClient(func:AxiosTransformer[]) {
-        let auth;
+        let auth = {};
 
         if (this.httpConfig.requires_auth) {
             const authDetails = this.httpConfig.api_authentication as HttpAuth;

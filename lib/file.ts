@@ -17,7 +17,7 @@ export class File {
         });
     }
 
-    static csv(fileStream:fs.ReadStream) {
+    csv(fileStream:fs.ReadStream) {
         const data:any = [];
 
         return new Promise((resolve, reject) => {
