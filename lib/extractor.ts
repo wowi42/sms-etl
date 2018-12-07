@@ -1,5 +1,4 @@
 import * as moment from 'moment';
-import Config from '../system';
 
 export interface SubsriptionMap {
     id:string;
@@ -159,7 +158,7 @@ export class DataExtractorLoader {
         const unsubscriptionPackets:{ url:string; packet:UnsubscriptionRequestBody; }[] = [];
 
         for (let idx = 0; idx < this._dataset.length; idx++) {
-            const data = this._dataset[idx];
+            // const data = this._dataset[idx];
 
             /* unsubscriptionPackets.push(
                 {

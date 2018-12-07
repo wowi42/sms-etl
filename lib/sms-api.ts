@@ -1,6 +1,6 @@
 import Config from '../configuration/system';
 import axios from 'axios';
-import {SubscriptionRequestBody} from '../configuration/loaders/extractor';
+import {SubscriptionRequestBody} from './extractor';
 
 export class SMSApi {
 
@@ -30,7 +30,4 @@ export class SMSApi {
         }
     }
 
-/*     private async unsubscribe(data) {
-
-    } */
 }
