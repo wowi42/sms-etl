@@ -1,5 +1,3 @@
-const csv = require('fast-csv');
-
 import {ReadStream, createReadStream} from 'fs';
 import {File} from '../../lib/file';
 
