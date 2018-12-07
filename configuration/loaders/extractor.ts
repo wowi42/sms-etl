@@ -1,4 +1,5 @@
 import * as moment from 'moment';
+import Config from '../system';
 
 export interface SubsriptionMap {
     id:string;
@@ -103,7 +104,7 @@ export class DataExtractorLoader {
     transformSubscriptionData() {
         this.cleanSubscriptionData();
 
-        const subscriptionPackets:SubscriptionRequestBody[] = [];
+        const subscriptionPackets:{ url:string; packet:SubscriptionRequestBody; }[] = [] as any;
 
         for (let idx = 0; idx < this._dataset.length; idx++) {
             const data = this._dataset[idx];
@@ -136,34 +137,40 @@ export class DataExtractorLoader {
 
             subscriptionPackets.push(
                 {
-                    campaign: this.campaign,
-                    reference_date: data[this._requirements.referenceDate],
-                    subscriber_number: data[this._requirements.subscriberPhoneNumber],
-                    subscriber_type: data[this._requirements.typeOfSubscriber],
-                    metadata: { ...metadata },
-                    ...others,
+                    packet: {
+                        campaign: this.campaign,
+                        reference_date: data[this._requirements.referenceDate],
+                        subscriber_number: data[this._requirements.subscriberPhoneNumber],
+                        subscriber_type: data[this._requirements.typeOfSubscriber],
+                        metadata: { ...metadata },
+                        ...others,
+                    },
+                    url: `subscription/save/?ref_id=${data[this._requirements.id]}&ref_key=${this.apiCallId}`
                 }
             );
         }
 
-        return subscriptionPackets;
+        return ;
     }
 
     transformUnsubscriptionData() {
         this.cleanUnsubscriptionData();
 
-        const unsubscriptionPackets:UnsubscriptionRequestBody[] = [];
+        const unsubscriptionPackets:{ url:string; packet:UnsubscriptionRequestBody; }[] = [];
 
         for (let idx = 0; idx < this._dataset.length; idx++) {
             const data = this._dataset[idx];
 
-            unsubscriptionPackets.push(
+            /* unsubscriptionPackets.push(
                 {
-                    campaign: this.campaign,
-                    hh_number: data[this._requirements.householdPhonenumber],
-                    unsubscribe_type: data[this._requirements.unsubscriptionType],
+                    packet: {
+                        campaign: this.campaign,
+                        hh_number: data[this._requirements.householdPhonenumber],
+                        unsubscribe_type: data[this._requirements.unsubscriptionType],
+                    },
+                    url: `unsubscription/save/?ref_id=${data[this._requirements.id]}&ref_key=${this.apiCallId}`
                 }
-            );
+            ); */
         }
 
         return unsubscriptionPackets;

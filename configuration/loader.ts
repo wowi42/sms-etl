@@ -1,41 +1,25 @@
+import {DbConfig, SQLLoader} from './loaders/sql';
+import {HttpConfig, HTTPLoader} from './loaders/http';
+import {CSVLoader} from './loaders/csv';
 
-const enum LoaderTypes {
-    CSV = 'csv-loader',
-    SQL = 'sql-loader',
-    HTTP = 'http-loader',
-    EXTRATOR = 'data-extrator-loader',
-}
+export class ConfigurationLoader {
 
-class ConfigurationLoader {
-
-    // private loader:;
-
-    constructor(type:LoaderTypes) {
-        switch (type) {
-            case LoaderTypes.CSV:
-                return '';
-            case LoaderTypes.SQL:
-                return '';
-            case LoaderTypes.EXTRATOR:
-                return '';
-            case LoaderTypes.HTTP:
-                return '';
-            default:
-                console.log('[CONFIG_LOADER]', 'Loader is unknown');
-                throw new Error('Unknown loader');
-        }
+    sqlLoader(name: string, sqlConfig:DbConfig[]) {
+        return Promise.all(sqlConfig.map(
+                async (config) => await SQLLoader.setup(name, config)
+            ));
     }
 
-    sqlLoader() {
-        //
+    csvLoader(csvConfig:{name:string, filepath:string}[]) {
+        return Promise.all(csvConfig.map(async (config) =>
+            await CSVLoader.setup(config.name, config.filepath)
+        ));
     }
 
-    csvLoader() {
-        //
-    }
-
-    httpLoader() {
-        //
+    httpLoader(name:string, httpConfig:HttpConfig[]) {
+        return Promise.all(httpConfig.map(async (config) =>
+                await HTTPLoader.setup(name, config, [])
+            ));
     }
 
 }

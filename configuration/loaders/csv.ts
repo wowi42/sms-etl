@@ -10,10 +10,6 @@ export class CSVLoader {
         return await File.csv(loader.fileStream);
     }
 
-    get loadData() {
-        return this.fileStream;
-    }
-
     private constructor(public readonly name:string, readonly filepath:string) {
         this.fileStream = createReadStream(filepath);
     }
