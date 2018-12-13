@@ -1,6 +1,5 @@
 import {SQLLoader} from './loaders/sql';
 import {HttpConfig, HTTPLoader} from './loaders/http';
-import {CSVLoader} from './loaders/csv';
 import {Database} from '../lib/db';
 import {File} from '../lib/file';
 
@@ -8,6 +7,7 @@ export interface SqlSetupConfig {
     name:string;
     db:Database;
     sqlFilePath:string;
+    sqlFile:File;
 }
 
 class ConfigurationLoader {
@@ -21,9 +21,7 @@ class ConfigurationLoader {
 
         for (let idx = 0; idx < configs.length; idx++) {
             const config = configs[idx];
-
-            const sqlLoader = await new SQLLoader(config.name, config.db, config.sqlFilePath);
-            queryHelper[sqlLoader.name] = sqlLoader.loadData;
+            queryHelper[config.name] = await new SQLLoader(config.name, config.db, config.sqlFilePath, config.sqlFile);
         }
 
         return queryHelper;
@@ -47,3 +45,15 @@ class ConfigurationLoader {
 }
 
 export const Loader = new ConfigurationLoader();
+
+/*
+ * loads data from the configuration loader (SQL, CSV, HTTP)
+ * @param { [k:string]:TArg; } queries -  An object of loaders
+ */
+export async function LoadData<TArg = any>(queries:TArg):Promise<TArg> {
+    for (const key of Object.keys(queries)) {
+        queries[key] = await queries[key].loadData();
+    }
+
+    return queries;
+}

@@ -75,7 +75,7 @@ export class SchemaValidator {
 
             let file;
             try {
-                file = await File.reader(config.path);
+                file = await new File().reader(config.path);
             } catch (e) {
                 console.log('[ConfigurationLoader]', 'Skipping configuration on path', config.path); // should be a log
                 continue;

@@ -1,28 +1,34 @@
 import {DatabaseConnectionOpts} from '../db';
 
-class Sequelize {
+class MockSequelize {
     query(sql:string, opts: { raw:boolean; retry: { max:number; }; nest:boolean }) {
-        return require('../../__tests__/samples/query-data.json');
+        console.log('Arguments are:', sql, opts);
+        return require('../../__tests__/samples/sql-data.json');
     }
 }
 
 class Database {
+    private connection:MockSequelize;
 
-    static connect(name:string, connectionOpts:DatabaseConnectionOpts) {
-        return new Promise(resolve => {
-            setTimeout(() => {
-                console.log('Connected to database!');
-                resolve(new Sequelize());
-            }, 1000);
-        });
+    static async connect(name:string, opts:DatabaseConnectionOpts) {
+        const db = new Database();
+        db.connect(name, opts);
+
+        return db;
     }
 
-    static disconnect() {
-        return new Promise(resolve => {
-            setTimeout(() => {
-                console.log('Disconnected from database');
-                resolve(true);
-            });
+    get sequelize() {
+        return this.connection;
+    }
+
+    connect(name:string, opts:DatabaseConnectionOpts) {
+        console.log('Inputs are: ', name, JSON.stringify(opts));
+        this.connection = new MockSequelize();
+    }
+
+    async disconnect() {
+        return await new Promise(resolve => {
+            setTimeout(_ => resolve(), 1000); // buys sometime in the setTimeout function
         });
     }
 

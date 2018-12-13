@@ -32,6 +32,10 @@ module.exports = {
         '<rootDir>/lib/',
     ],
     testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.ts$',
-    timers: 'fake'
-
+    timers: 'fake',
+    globals: {
+        'ts-jest': {
+            diagnostics: false
+        }
+    }
 }

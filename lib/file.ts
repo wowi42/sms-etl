@@ -3,7 +3,7 @@ const csv = require('fast-csv');
 
 export class File {
 
-    static reader(path:string):Promise<string> {
+    reader(path:string):Promise<string> {
         return new Promise((resolve, reject) => {
             fs.readFile(path, { encoding: 'utf8' },
                 (err, data) => {

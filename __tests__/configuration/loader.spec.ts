@@ -1,9 +1,14 @@
-import {Loader} from '../../configuration/loader';
 import {SchemaValidator, ConfigurationTypes} from '../../configuration/schema-validator';
 import * as path from 'path';
 import Config from '../../configuration/system';
 import {Database} from '../../lib/db';
-import { DbConfig, SQLLoader } from '../../configuration/loaders/sql';
+import {DbConfig, SQLLoader} from '../../configuration/loaders/sql';
+import {File} from '../../lib/file';
+// import {CSVLoader} from '../../configuration/loaders/csv';
+import {Loader, SqlSetupConfig, LoadData} from '../../configuration/loader';
+
+jest.mock('../../lib/db');
+jest.mock('../../lib/file');
 
 const samplesPath = path.join(Config.rootUri, '__tests__', 'samples');
 
@@ -30,7 +35,9 @@ const configLoader = [
     },
 ];
 
-let processedConfig;
+let processedConfig:any[];
+
+type queryArg = SQLLoader & { id:string; phone:string; refDate:string; }[];
 
 beforeAll(async () => {
     const validator = new SchemaValidator(configLoader);
@@ -40,10 +47,12 @@ beforeAll(async () => {
 test('Should Get SQL Loader array', async () => {
     expect(!processedConfig || processedConfig.length < 1).toBeFalsy();
 
+    const sqlSetup:SqlSetupConfig[] = [];
+
     for (const rawConfig of processedConfig) {
         if (rawConfig.type === ConfigurationTypes.SQL) {
             const dbConfig = rawConfig.configuration.database_connection as DbConfig;
-            const sqlFile = rawConfig.configuration.sql_file;
+            const sqlFile = rawConfig.configuration.sqlfile;
             const loaderName = rawConfig.configuration.connection_name;
 
             const db = await Database.connect(
@@ -57,16 +66,60 @@ test('Should Get SQL Loader array', async () => {
                     user: dbConfig.user,
                 });
 
-            const sqlLoader = new SQLLoader(loaderName, db, sqlFile);
-            expect(sqlLoader.name).toBe(loaderName);
-            // expect
+            sqlSetup.push({
+                db,
+                name: loaderName,
+                sqlFile: new File(),
+                sqlFilePath: sqlFile,
+            });
+
+        } else {
+            console.log('Not SQL COnfiguration');
         }
+    }
+
+    expect(sqlSetup.length).toBeGreaterThan(0);
+
+    const queries: { [key:string]: SQLLoader; } = await Loader.sql(sqlSetup);
+
+    const queryData = await LoadData<{ [key:string]: queryArg; }>(queries as { [key:string]: queryArg; });
+
+    for (const name of Object.keys(queryData)) {
+        expect(Array.isArray(queryData[name])).toBeTruthy();
+        expect(queryData[name].length).toBeGreaterThan(0);
+        expect(queryData[name][0].hasOwnProperty('id')).toBeTruthy();
+        expect(queryData[name][0].hasOwnProperty('phone')).toBeTruthy();
+        expect(queryData[name][0].hasOwnProperty('refDate')).toBeTruthy();
+        expect(queryData[name][0].hasOwnProperty('chp')).toBeTruthy();
     }
 
 });
 
-test('Should Get CSV Loader array', done => {
-    done();
+test('Should Get CSV Loader array', (done) => {
+    done(); // for passing empty test
+    // expect(!processedConfig || processedConfig.length < 1).toBeFalsy();
+    //
+    // for (const rawConfig of processedConfig) {
+    //     if (rawConfig.type === ConfigurationTypes.CSV) {
+    //         const name = rawConfig.configuration.key;
+    //         const filename = rawConfig.configuration.filepath;
+    //
+    //         const file = new File();
+    //
+    //         const csvLoader = new CSVLoader(name, );
+    //
+    //         // const queryData = await sqlLoader.loadData(file) as Array<{ id:string; phone:string; refDate:string; }>;
+    //         // expect(Array.isArray(queryData)).toBeTruthy();
+    //         // expect(queryData.length).toBeGreaterThan(0);
+    //         // expect(queryData[0].hasOwnProperty('id')).toBeTruthy();
+    //         // expect(queryData[0].hasOwnProperty('phone')).toBeTruthy();
+    //         // expect(queryData[0].hasOwnProperty('refDate')).toBeTruthy();
+    //         // expect(queryData[0].hasOwnProperty('chp')).toBeTruthy();
+    //     } else {
+    //         console.log('Not SQL COnfiguration');
+    //     }
+    // }
+
 });
 
 test('Should Get HTTP Loader array', done => {

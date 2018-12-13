@@ -8,12 +8,12 @@ export interface DbConfig {
     user:string;
     password:string;
     dialect:string;
-    sql_file:string;
+    sqlfile:string;
 }
 
 export class SQLLoader {
 
-    constructor(public readonly name:string, private readonly db:Database, private sql_file:string) { }
+    constructor(public readonly name:string, private readonly db:Database, private sql_file:string, private sqlFile:File) { }
 
 /*     private async createDbConnection() {
         try {
@@ -37,7 +37,7 @@ export class SQLLoader {
         let sql;
 
         try {
-            sql = await File.reader(this.sql_file);
+            sql = await this.sqlFile.reader(this.sql_file);
         } catch (e) {
             console.log('[SQLLoader] Could not read SQL file'); // should be a log
             console.log(e); // should be a log
