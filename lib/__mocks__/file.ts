@@ -20,7 +20,7 @@ export class File {
     }
 
     csv(fileStream:any) {
-        console.log('Arguments are:', fileStream);
+        console.log('Argument types are:', typeof fileStream);
         const data = require('../../__tests__/samples/csv-data.json');
 
         return new Promise(resolve => resolve(data));

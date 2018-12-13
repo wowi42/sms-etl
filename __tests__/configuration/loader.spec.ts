@@ -4,8 +4,9 @@ import Config from '../../configuration/system';
 import {Database} from '../../lib/db';
 import {DbConfig, SQLLoader} from '../../configuration/loaders/sql';
 import {File} from '../../lib/file';
-// import {CSVLoader} from '../../configuration/loaders/csv';
+import {CSVLoader} from '../../configuration/loaders/csv';
 import {Loader, SqlSetupConfig, LoadData} from '../../configuration/loader';
+import {createReadStream} from 'fs';
 
 jest.mock('../../lib/db');
 jest.mock('../../lib/file');
@@ -95,37 +96,38 @@ test('Should Get SQL Loader array', async () => {
 
 });
 
-test('Should Get CSV Loader array', (done) => {
-    done(); // for passing empty test
-    // expect(!processedConfig || processedConfig.length < 1).toBeFalsy();
-    //
-    // for (const rawConfig of processedConfig) {
-    //     if (rawConfig.type === ConfigurationTypes.CSV) {
-    //         const name = rawConfig.configuration.key;
-    //         const filename = rawConfig.configuration.filepath;
-    //
-    //         const file = new File();
-    //
-    //         const csvLoader = new CSVLoader(name, );
-    //
-    //         // const queryData = await sqlLoader.loadData(file) as Array<{ id:string; phone:string; refDate:string; }>;
-    //         // expect(Array.isArray(queryData)).toBeTruthy();
-    //         // expect(queryData.length).toBeGreaterThan(0);
-    //         // expect(queryData[0].hasOwnProperty('id')).toBeTruthy();
-    //         // expect(queryData[0].hasOwnProperty('phone')).toBeTruthy();
-    //         // expect(queryData[0].hasOwnProperty('refDate')).toBeTruthy();
-    //         // expect(queryData[0].hasOwnProperty('chp')).toBeTruthy();
-    //     } else {
-    //         console.log('Not SQL COnfiguration');
-    //     }
-    // }
+test('Should Get CSV Loader array', async () => {
+    expect(!processedConfig || processedConfig.length < 1).toBeFalsy();
 
+    for (const rawConfig of processedConfig) {
+        if (rawConfig.type === ConfigurationTypes.CSV) {
+
+            const name = rawConfig.configuration.key;
+            const fileStream = createReadStream(rawConfig.configuration.filepath);
+
+            const csvLoader = new CSVLoader(name, fileStream, new File());
+            await csvLoader.loadData();
+
+            const queryData = csvLoader.loadedData;
+
+            expect(Array.isArray(queryData)).toBeTruthy();
+            expect(queryData.length).toBeGreaterThan(0);
+            expect(queryData[0].hasOwnProperty('id')).toBeTruthy();
+            expect(queryData[0].hasOwnProperty('phone')).toBeTruthy();
+            expect(queryData[0].hasOwnProperty('refDate')).toBeTruthy();
+            expect(queryData[0].hasOwnProperty('chp')).toBeTruthy();
+            expect(queryData[0].hasOwnProperty('name')).toBeTruthy();
+
+        } else {
+            console.log('Not CSV Configuration!');
+        }
+    }
 });
 
 test('Should Get HTTP Loader array', done => {
-    done();
+    done(); // for passing empty test
 });
 
 test('Should fail while getting array of loaders', done => {
-    done();
+    done(); // for passing empty test
 });

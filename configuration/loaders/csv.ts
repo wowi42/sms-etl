@@ -1,4 +1,4 @@
-import {ReadStream, createReadStream} from 'fs';
+import {ReadStream} from 'fs';
 import {File} from '../../lib/file';
 
 export class CSVLoader {
@@ -9,13 +9,13 @@ export class CSVLoader {
         return this.data;
     }
 
-    private constructor(
+    constructor(
         public readonly name:string,
         private readonly filestream:ReadStream,
         private readonly Reader:File
     ) { }
 
-    async load() {
+    async loadData() {
         this.data = await this.Reader.csv(this.filestream);
     }
 
