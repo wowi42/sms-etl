@@ -12,7 +12,7 @@ In order to use the service on your server you have to understand the follow:
 2. The service uses `YAML` form of configuration (files).
 3. The configuration are accessed per folder i.e. save configurations per folder in the following format
 
-    ```txt
+    ```
     - Root_Configuration_Folder
         - sample-configuration_1
             - sql.config.yml
@@ -32,15 +32,13 @@ In order to use the service on your server you have to understand the follow:
 
     The contents of the environments file are:
 
-    ```txt
-
+    ```
     SMS_API_ID=
     SMS_API_KEY=
     SMS_API_URL=
 
     LOG_PATH=     # where all log files will be created (REQUIRED)
     CONFIG_PATH=      # where all the configurations are located (REQUIRED)
-
     ```
 
 5. The service runs a server running on `PORT=5005`. This server serves:
