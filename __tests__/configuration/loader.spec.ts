@@ -2,7 +2,7 @@ import {SchemaValidator, ConfigurationTypes} from '../../configuration/schema-va
 import * as path from 'path';
 import Config from '../../configuration/system';
 import {Database} from '../../lib/db';
-import {DbConfig, SQLLoader} from '../../configuration/loaders/sql';
+import {DbConfig} from '../../configuration/loaders/sql';
 import {File} from '../../lib/file';
 import {Loader, SqlSetupConfig, CsvSetupConfig, HttpSetupConfig} from '../../configuration/loader';
 import {createReadStream} from 'fs';
