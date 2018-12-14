@@ -32,7 +32,7 @@ In order to use the service on your server you have to understand the follow:
 
     The contents of the environments file are:
 
-    ```env
+    ```txt
 
     SMS_API_ID=
     SMS_API_KEY=
