@@ -152,26 +152,8 @@ export class Extractor {
         return ;
     }
 
+    // WIP
     transformUnsubscriptionData() {
         this.cleanUnsubscriptionData();
-
-/*         const unsubscriptionPackets:{ url:string; packet:UnsubscriptionRequestBody; }[] = [];
-
-        for (let idx = 0; idx < this._dataset.length; idx++) {
-            // const data = this._dataset[idx];
-
-            unsubscriptionPackets.push(
-                {
-                    packet: {
-                        campaign: this.campaign,
-                        hh_number: data[this._requirements.householdPhonenumber],
-                        unsubscribe_type: data[this._requirements.unsubscriptionType],
-                    },
-                    url: `unsubscription/save/?ref_id=${data[this._requirements.id]}&ref_key=${this.apiCallId}`
-                }
-            );
-        }
-
-        return unsubscriptionPackets; */
     }
 }

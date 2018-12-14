@@ -147,7 +147,7 @@ test('Should Get HTTP Loader array', async () => {
             httpSetup.push({
                 name: rawConfig.configuration.name,
                 httpConfig: rawConfig.configuration as HttpConfig,
-                httpClient: new HTTPClient([], HTTPLoader.generateAuthHeader(rawConfig.configuration as HttpConfig)),
+                httpClient: new HTTPClient(HTTPLoader.generateAuthHeader(rawConfig.configuration as HttpConfig)),
             });
         } else {
             console.log('Not HTTP Configuration!');

@@ -24,7 +24,8 @@ export class SMSApi {
                 }
             });
 
-            console.log('Performed subscription for ' + data.packet.subscriber_number); // should be a log
+            console.log('Successfully performed subscription');
+            console.log('subscriber phone number', data.packet.subscriber_number, 'campaign id:', data.packet.campaign); // log (info)
 
             return req.data;
         } catch (e) {
