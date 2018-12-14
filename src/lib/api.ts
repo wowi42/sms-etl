@@ -1,7 +1,6 @@
-import * as express, {Request, Response, NextFunction} from 'express';
+import * as express from 'express';
 import * as path from 'path';
 import * as compression from 'compression';
-import * as express from 'express';
 import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
 import * as helmet from 'helmet';
@@ -10,7 +9,7 @@ import Config from '../../configuration/system';
 const PATHS = {
     frontEnd: path.resolve(Config.rootUri, 'app', 'dist'),
     testCoverage: path.resolve(Config.rootUri, 'coverage'),
-    logFiles: Config.logPath,
+    logFiles: Config.logPath || path.resolve(Config.rootUri, 'logs'),
 };
 
 const app = express();
@@ -44,7 +43,7 @@ app.use(
 app.use(bodyParser.json());
 
 if (process.env.NODE_ENV !== 'production') {
-    app.use((req:Request, res:Response, next:NextFunction) => {
+    app.use((req:express.Request, res:express.Response, next:express.NextFunction) => {
         res.header('Access-Control-Allow-Origin', '*');
         res.header('Access-Control-Allow-Credentials', 'true');
         res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,PATCH,DELETE,OPTIONS,HEAD');
@@ -65,7 +64,7 @@ app.use('/test/coverage/', express.static(PATHS.testCoverage));
 // API ENDPOINTS GO HERE //
 
 
-app.use((req:Request, res:Response, next:NextFunction) => {
+app.use((req:express.Request, res:express.Response, next:express.NextFunction) => {
     const err: any = new Error();
     err.status = 404;
     err.message = 'Requested resource was not found';
@@ -74,7 +73,7 @@ app.use((req:Request, res:Response, next:NextFunction) => {
 });
 
 // respond with error
-app.use((err:any, req:Request, res:Response, next:NextFunction) => {
+app.use((err:any, req:express.Request, res:express.Response, next:express.NextFunction) => {
     if (process.env.NODE_ENV !== 'production') { console.error(err); }
     return res.status(err.status || 500).json({ ...err, timestamp: new Date().toDateString() });
 });
