@@ -13,6 +13,8 @@
     "axios": "0.18.0",
     "dotenv": "6.2.0",
     "fast-csv": "2.4.1",
+    "forever": "0.15.3",
+    "forever-monitor": "1.7.1",
     "lodash": "4.17.11",
     "moment": "2.22.2",
     "mysql2": "1.6.4",
@@ -21,11 +23,14 @@
     "sequelize": "4.41.2",
     "sqlite3": "4.0.4",
     "tedious": "3.0.1",
+    "winston": "3.1.0",
+    "winston-daily-rotate-file": "3.5.1",
     "yaml": "1.0.3",
     "yaml-schema-validator": "1.1.7"
   },
   "devDependencies": {
     "@types/dotenv": "6.1.0",
+    "@types/forever-monitor": "^1.7.3",
     "@types/jest": "23.3.10",
     "@types/node": "10.12.12",
     "@types/pg": "7.4.11",

@@ -57,7 +57,7 @@ export class Extractor {
         this._requirements = requirements;
     }
 
-    private constructor(
+    constructor(
         public readonly apiCallType:'subscription' | 'unsubscription',
         public readonly apiCallId:string,
         private readonly campaign:number,
@@ -105,9 +105,7 @@ export class Extractor {
 
         const subscriptionPackets:{ url:string; packet:SubscriptionRequestBody; }[] = [] as any;
 
-        for (let idx = 0; idx < this._dataset.length; idx++) {
-            const data = this._dataset[idx];
-
+        for (const data of this._dataset) {
             const others: any = {}, metadata: any = {};
 
             /**
@@ -140,7 +138,7 @@ export class Extractor {
                         campaign: this.campaign,
                         reference_date: data[this._requirements.referenceDate],
                         subscriber_number: data[this._requirements.subscriberPhoneNumber],
-                        subscriber_type: data[this._requirements.typeOfSubscriber],
+                        subscriber_type: this._requirements.typeOfSubscriber,
                         metadata: { ...metadata },
                         ...others,
                     },
@@ -149,7 +147,7 @@ export class Extractor {
             );
         }
 
-        return ;
+        return subscriptionPackets;
     }
 
     // WIP

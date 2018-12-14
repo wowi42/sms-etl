@@ -9,11 +9,11 @@ import * as yaml from 'yaml';
 import Config from './system';
 
 export const enum ConfigurationTypes {
-    SQL = 'sql database',
-    CSV = 'csv file',
-    HTTP = 'http webhook',
-    SUBSCRIPTION = 'subscription data extraction',
-    UNSUBSCRIPTION = 'un-subscription data extraction',
+    SQL,
+    CSV,
+    HTTP,
+    SUBSCRIPTION,
+    UNSUBSCRIPTION,
 }
 
 export interface Configuration {

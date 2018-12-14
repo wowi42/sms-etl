@@ -1,14 +1,14 @@
 subscription_map:
-  id: "ID"
+  id: "id"
   subscriberPhoneNumber: "phone"
   referenceDate: "refDate"
-  typeOfSubscriber: "household"
+  typeOfSubscriber: "chp"
   metadata:
-    - key: 'some_key'
-      value: 'some_value'
+    - key: 'name'
+      value: 'name'
   others:
-    - key: 'some_other_key'
-      value: 'some_other_value'
+    - key: 'chp_phone_number'
+      value: 'phone'
 
 api_call_id: "some-campaign-subscrption"
 

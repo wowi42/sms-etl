@@ -164,17 +164,13 @@ test('Should Get HTTP Loader array', async () => {
     await loader.loadData();
 
     for (const name of Object.keys(loader.dataList)) {
-        expect(loader.dataList[name].hasOwnProperty('data')).toBeTruthy();
-        expect(loader.dataList[name].hasOwnProperty('status')).toBeTruthy();
-        expect(loader.dataList[name].hasOwnProperty('statusText')).toBeTruthy();
-
-        expect(Array.isArray(loader.dataList[name].data)).toBeTruthy();
-        expect(loader.dataList[name].data.length).toBeGreaterThan(0);
-        expect(loader.dataList[name].data[0].hasOwnProperty('id')).toBeTruthy();
-        expect(loader.dataList[name].data[0].hasOwnProperty('phone')).toBeTruthy();
-        expect(loader.dataList[name].data[0].hasOwnProperty('refDate')).toBeTruthy();
-        expect(loader.dataList[name].data[0].hasOwnProperty('chp')).toBeTruthy();
-        expect(loader.dataList[name].data[0].hasOwnProperty('name')).toBeTruthy();
-        expect(loader.dataList[name].data[0].hasOwnProperty('location')).toBeTruthy();
+        expect(Array.isArray(loader.dataList[name])).toBeTruthy();
+        expect(loader.dataList[name].length).toBeGreaterThan(0);
+        expect(loader.dataList[name][0].hasOwnProperty('id')).toBeTruthy();
+        expect(loader.dataList[name][0].hasOwnProperty('phone')).toBeTruthy();
+        expect(loader.dataList[name][0].hasOwnProperty('refDate')).toBeTruthy();
+        expect(loader.dataList[name][0].hasOwnProperty('chp')).toBeTruthy();
+        expect(loader.dataList[name][0].hasOwnProperty('name')).toBeTruthy();
+        expect(loader.dataList[name][0].hasOwnProperty('location')).toBeTruthy();
     }
 });

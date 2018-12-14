@@ -44,10 +44,16 @@ export class HTTPLoader {
     }
 
     async loadData() {
-        return await this.httpClient.client({
-            method: this.httpConfig.webhook.method,
-            url: this.httpConfig.webhook.uri,
-        });
+        try {
+            const res = await this.httpClient.client({
+                method: this.httpConfig.webhook.method,
+                url: this.httpConfig.webhook.uri,
+            });
+
+            return res.data;
+        } catch (e) {
+            console.log('HTTPLoader LoadData Error', e); // should be a log
+        }
     }
 
 }
