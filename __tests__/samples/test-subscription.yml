@@ -1,0 +1,15 @@
+subscription_map:
+  id: "id"
+  subscriberPhoneNumber: "phone"
+  referenceDate: "refDate"
+  typeOfSubscriber: "chp"
+  metadata:
+    - key: 'name'
+      value: 'name'
+  others:
+    - key: 'chp_phone_number'
+      value: 'phone'
+
+api_call_id: "some-campaign-subscrption"
+
+campaign: 23

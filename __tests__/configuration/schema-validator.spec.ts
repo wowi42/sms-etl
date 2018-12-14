@@ -2,7 +2,7 @@ import * as path from 'path';
 import {SchemaValidator, ConfigurationTypes} from '../../configuration/schema-validator';
 import Config from '../../configuration/system';
 
-const configsRoot = path.join(Config.rootUri, '__tests__', 'configuration', 'sample-configs');
+const configsRoot = path.join(Config.rootUri, '__tests__', 'samples');
 
 const testConfigFilePaths = [
     {
@@ -18,8 +18,12 @@ const testConfigFilePaths = [
         path: path.join(configsRoot, 'test-http.yml')
     },
     {
-        type: ConfigurationTypes.EXTRATOR,
-        path: path.join(configsRoot, 'test-extractor.yml')
+        type: ConfigurationTypes.UNSUBSCRIPTION,
+        path: path.join(configsRoot, 'test-unsubscription.yml')
+    },
+    {
+        type: ConfigurationTypes.SUBSCRIPTION,
+        path: path.join(configsRoot, 'test-subscription.yml')
     },
 ];
 

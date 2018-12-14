@@ -6,4 +6,6 @@ database_connection:
   password: "test-password"
   port: 8080
   database_name: "sample_test_db"
-  dialect: "mssql"
+  dialect: "postgres"
+
+sqlfile: "/home/john/Workspace/Livinggoods/sms-etl/__tests__/samples/sample-data.sql"

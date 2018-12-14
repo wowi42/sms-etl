@@ -1,0 +1,19 @@
+
+https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties
+
+# editorconfig.org
+root = true
+
+[*]
+indent_style = space
+indent_size = 4
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.{js,css,html,ts,py,json}]
+trim_trailing_whitespace = true
+
+[*.{md,markdown,txt}]
+trim_trailing_whitespace = false

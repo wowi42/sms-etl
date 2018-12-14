@@ -14,25 +14,14 @@ subscription_map:
 
   others:
     - key:
-       type: string
+      type: string
     - value:
-       type: string
+      type: string
   metadata:
     - key:
-       type: string
-    - value:
-       type: string
-
-unsubscription_map:
-  id:
-    type: string
-    required: true
-  unsubscriptionType:
-    type: string
-    required: true
-  householdPhonenumber:
-    type: string
-    required: true
+        type: string
+      value:
+        type: string
 
 api_call_id:
   type: string

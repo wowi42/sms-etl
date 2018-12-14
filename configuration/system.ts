@@ -21,6 +21,9 @@ class SystemConfig {
 
     readonly smsApiUri = process.env.SMS_API_URL;
 
+    readonly smsApiKey = process.env.SMS_API_KEY;
+
+    readonly smsApiId = process.env.SMS_API_ID;
 }
 
 export default new SystemConfig();

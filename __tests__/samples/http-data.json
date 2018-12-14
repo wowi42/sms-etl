@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "phone": "0714040103",
+        "chp": "0705120291",
+        "refDate": "2019-01-2",
+        "name": "Winnie Linda",
+        "location": "busia"
+    },
+    {
+        "id": 1,
+        "phone": "0700140103",
+        "chp": "0719129091",
+        "refDate": "2018-12-24",
+        "name": "Esther Murithi",
+        "location": "funyala"
+    },
+    {
+        "id": 1,
+        "phone": "0701740993",
+        "chp": "0789129391",
+        "refDate": "2018-12-14",
+        "name": "Evans Maina",
+        "location": "thika"
+    }
+]

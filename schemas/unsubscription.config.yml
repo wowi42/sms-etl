@@ -1,0 +1,19 @@
+unsubscription_map:
+  id:
+    type: string
+    required: true
+  unsubscriptionType:
+    type: string
+    required: true
+  householdPhonenumber:
+    type: string
+    required: true
+
+api_call_id:
+  type: string
+  required: true
+
+# a bit more SMS Api sentric
+campaign:
+  type: number
+  required: true
