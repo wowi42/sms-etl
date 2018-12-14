@@ -3,12 +3,6 @@ import {File} from '../../lib/file';
 
 export class CSVLoader {
 
-    private data:any;
-
-    get loadedData() {
-        return this.data;
-    }
-
     constructor(
         public readonly name:string,
         private readonly filestream:ReadStream,
@@ -16,7 +10,7 @@ export class CSVLoader {
     ) { }
 
     async loadData() {
-        this.data = await this.Reader.csv(this.filestream);
+        return await this.Reader.csv(this.filestream);
     }
 
 }

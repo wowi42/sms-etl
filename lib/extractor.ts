@@ -34,7 +34,7 @@ export interface UnsubscriptionRequestBody {
     campaign?: number;
 }
 
-export class DataExtractorLoader {
+export class Extractor {
 
     private readonly validators = {
         'id': (val:string) => val && val !== '' && (typeof val === 'string' || typeof val === 'number'),

@@ -15,24 +15,6 @@ export class SQLLoader {
 
     constructor(public readonly name:string, private readonly db:Database, private sql_file:string, private sqlFile:File) { }
 
-/*     private async createDbConnection() {
-        try {
-            this.db = await Database.connect(this.name,
-                {
-                    database: this.dbConfig.database_name,
-                    host: this.dbConfig.host,
-                    port: this.dbConfig.port,
-                    user: this.dbConfig.user,
-                    password: this.dbConfig.password,
-                    dialect: this.dbConfig.dialect,
-                });
-
-        } catch (e) {
-            console.log(`[SQLLoader] Could not connect to ${this.name}`); // should be a log (but only console)
-            console.log('Error is', e);
-        }
-    } */
-
     async loadData():Promise<any | null> {
         let sql;
 

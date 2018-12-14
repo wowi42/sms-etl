@@ -2,6 +2,9 @@ import {SQLLoader} from './loaders/sql';
 import {HttpConfig, HTTPLoader} from './loaders/http';
 import {Database} from '../lib/db';
 import {File} from '../lib/file';
+import {ReadStream} from 'fs';
+import {CSVLoader} from './loaders/csv';
+import { HTTPClient } from '../lib/http-client';
 
 export interface SqlSetupConfig {
     name:string;
@@ -10,50 +13,55 @@ export interface SqlSetupConfig {
     sqlFile:File;
 }
 
-class ConfigurationLoader {
-
-    /**
-     * creates an object holding all sql loader class objects
-     * @param {SqlSetupConfig[]} configs - sql database configuration for intializing the SQLLoader class
-     */
-    async sql(configs:SqlSetupConfig[]) {
-        const queryHelper = {};
-
-        for (let idx = 0; idx < configs.length; idx++) {
-            const config = configs[idx];
-            queryHelper[config.name] = await new SQLLoader(config.name, config.db, config.sqlFilePath, config.sqlFile);
-        }
-
-        return queryHelper;
-    }
-
-    /**
-     * creates an object oj ajax ready requests
-     * @param {HttpConfig[]} httpConfig - http webhook configuration
-     */
-    async http(httpConfig:HttpConfig[]) {
-        const httpConnections = {};
-
-        for (let idx = 0; idx < httpConfig.length; idx++) {
-            const config = httpConfig[idx];
-            httpConnections[config.name] = await HTTPLoader.setup(config, []);
-        }
-
-        return httpConnections;
-    }
-
+export interface CsvSetupConfig {
+    name:string;
+    filestream:ReadStream;
+    Reader:File;
 }
 
-export const Loader = new ConfigurationLoader();
+export interface HttpSetupConfig {
+    name:string;
+    httpConfig:HttpConfig;
+    httpClient:HTTPClient;
+}
 
-/*
- * loads data from the configuration loader (SQL, CSV, HTTP)
- * @param { [k:string]:TArg; } queries -  An object of loaders
- */
-export async function LoadData<TArg = any>(queries:TArg):Promise<TArg> {
-    for (const key of Object.keys(queries)) {
-        queries[key] = await queries[key].loadData();
+export class Loader {
+
+    private loader = {};
+    private data = {};
+
+    public get loaderList() {
+        return this.loader;
     }
 
-    return queries;
+    public get dataList() {
+        return this.data;
+    }
+
+    public async load(configs:any[], type: 'csv' | 'http' | 'sql') {
+        for (let idx = 0; idx < configs.length; idx++) {
+            const config = configs[idx];
+            this.loader[config.name] = await this.loaderFactory(type, config);
+        }
+    }
+
+    public async loadData():Promise<void> {
+        for (const key of Object.keys(this.loader)) {
+            this.data[key] = await this.loader[key].loadData();
+        }
+    }
+
+    private loaderFactory(type: 'csv' | 'http' | 'sql', config:any) {
+        switch (type) {
+            case 'csv':
+                return new CSVLoader(config.name, config.filestream, config.Reader);
+            case 'sql':
+                return new SQLLoader(config.name, config.db, config.sqlFilePath, config.sqlFile);
+            case 'http':
+                return new HTTPLoader(config.httpConfig, config.httpClient);
+            default:
+                throw new Error('loader could not be identified');
+        }
+    }
+
 }

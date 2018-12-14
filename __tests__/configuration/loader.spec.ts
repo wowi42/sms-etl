@@ -4,12 +4,14 @@ import Config from '../../configuration/system';
 import {Database} from '../../lib/db';
 import {DbConfig, SQLLoader} from '../../configuration/loaders/sql';
 import {File} from '../../lib/file';
-import {CSVLoader} from '../../configuration/loaders/csv';
-import {Loader, SqlSetupConfig, LoadData} from '../../configuration/loader';
+import {Loader, SqlSetupConfig, CsvSetupConfig, HttpSetupConfig} from '../../configuration/loader';
 import {createReadStream} from 'fs';
+import {HttpConfig, HTTPLoader} from '../../configuration/loaders/http';
+import {HTTPClient} from '../../lib/http-client';
 
 jest.mock('../../lib/db');
 jest.mock('../../lib/file');
+jest.mock('../../lib/http-client');
 
 const samplesPath = path.join(Config.rootUri, '__tests__', 'samples');
 
@@ -37,8 +39,6 @@ const configLoader = [
 ];
 
 let processedConfig:any[];
-
-type queryArg = SQLLoader & { id:string; phone:string; refDate:string; }[];
 
 beforeAll(async () => {
     const validator = new SchemaValidator(configLoader);
@@ -81,17 +81,19 @@ test('Should Get SQL Loader array', async () => {
 
     expect(sqlSetup.length).toBeGreaterThan(0);
 
-    const queries: { [key:string]: SQLLoader; } = await Loader.sql(sqlSetup);
+    const loader = new Loader();
 
-    const queryData = await LoadData<{ [key:string]: queryArg; }>(queries as { [key:string]: queryArg; });
+    await loader.load(sqlSetup as SqlSetupConfig[], 'sql');
 
-    for (const name of Object.keys(queryData)) {
-        expect(Array.isArray(queryData[name])).toBeTruthy();
-        expect(queryData[name].length).toBeGreaterThan(0);
-        expect(queryData[name][0].hasOwnProperty('id')).toBeTruthy();
-        expect(queryData[name][0].hasOwnProperty('phone')).toBeTruthy();
-        expect(queryData[name][0].hasOwnProperty('refDate')).toBeTruthy();
-        expect(queryData[name][0].hasOwnProperty('chp')).toBeTruthy();
+    await loader.loadData();
+
+    for (const name of Object.keys(loader.dataList)) {
+        expect(Array.isArray(loader.dataList[name])).toBeTruthy();
+        expect(loader.dataList[name].length).toBeGreaterThan(0);
+        expect(loader.dataList[name][0].hasOwnProperty('id')).toBeTruthy();
+        expect(loader.dataList[name][0].hasOwnProperty('phone')).toBeTruthy();
+        expect(loader.dataList[name][0].hasOwnProperty('refDate')).toBeTruthy();
+        expect(loader.dataList[name][0].hasOwnProperty('chp')).toBeTruthy();
     }
 
 });
@@ -99,35 +101,80 @@ test('Should Get SQL Loader array', async () => {
 test('Should Get CSV Loader array', async () => {
     expect(!processedConfig || processedConfig.length < 1).toBeFalsy();
 
+    const csvSetup:CsvSetupConfig[] = [];
+
     for (const rawConfig of processedConfig) {
+
         if (rawConfig.type === ConfigurationTypes.CSV) {
-
-            const name = rawConfig.configuration.key;
-            const fileStream = createReadStream(rawConfig.configuration.filepath);
-
-            const csvLoader = new CSVLoader(name, fileStream, new File());
-            await csvLoader.loadData();
-
-            const queryData = csvLoader.loadedData;
-
-            expect(Array.isArray(queryData)).toBeTruthy();
-            expect(queryData.length).toBeGreaterThan(0);
-            expect(queryData[0].hasOwnProperty('id')).toBeTruthy();
-            expect(queryData[0].hasOwnProperty('phone')).toBeTruthy();
-            expect(queryData[0].hasOwnProperty('refDate')).toBeTruthy();
-            expect(queryData[0].hasOwnProperty('chp')).toBeTruthy();
-            expect(queryData[0].hasOwnProperty('name')).toBeTruthy();
-
+            csvSetup.push({
+                name: rawConfig.configuration.key,
+                filestream: createReadStream(rawConfig.configuration.filepath),
+                Reader: new File(),
+            });
         } else {
             console.log('Not CSV Configuration!');
         }
+
+    }
+
+    expect(csvSetup.length).toBeGreaterThan(0);
+
+    const loader = new Loader();
+
+    await loader.load(csvSetup as CsvSetupConfig[], 'csv');
+
+    await loader.loadData();
+
+    for (const name of Object.keys(loader.dataList)) {
+        expect(Array.isArray(loader.dataList[name])).toBeTruthy();
+        expect(loader.dataList[name].length).toBeGreaterThan(0);
+        expect(loader.dataList[name][0].hasOwnProperty('id')).toBeTruthy();
+        expect(loader.dataList[name][0].hasOwnProperty('phone')).toBeTruthy();
+        expect(loader.dataList[name][0].hasOwnProperty('refDate')).toBeTruthy();
+        expect(loader.dataList[name][0].hasOwnProperty('chp')).toBeTruthy();
+        expect(loader.dataList[name][0].hasOwnProperty('name')).toBeTruthy();
     }
 });
 
-test('Should Get HTTP Loader array', done => {
-    done(); // for passing empty test
-});
+test('Should Get HTTP Loader array', async () => {
+    expect(!processedConfig || processedConfig.length < 1).toBeFalsy();
 
-test('Should fail while getting array of loaders', done => {
-    done(); // for passing empty test
+    const httpSetup:HttpSetupConfig[] = [];
+
+    for (const rawConfig of processedConfig) {
+
+        if (rawConfig.type === ConfigurationTypes.HTTP) {
+            httpSetup.push({
+                name: rawConfig.configuration.name,
+                httpConfig: rawConfig.configuration as HttpConfig,
+                httpClient: new HTTPClient([], HTTPLoader.generateAuthHeader(rawConfig.configuration as HttpConfig)),
+            });
+        } else {
+            console.log('Not HTTP Configuration!');
+        }
+
+    }
+
+    expect(httpSetup.length).toBeGreaterThan(0);
+
+    const loader = new Loader();
+
+    await loader.load(httpSetup as HttpSetupConfig[], 'http');
+
+    await loader.loadData();
+
+    for (const name of Object.keys(loader.dataList)) {
+        expect(loader.dataList[name].hasOwnProperty('data')).toBeTruthy();
+        expect(loader.dataList[name].hasOwnProperty('status')).toBeTruthy();
+        expect(loader.dataList[name].hasOwnProperty('statusText')).toBeTruthy();
+
+        expect(Array.isArray(loader.dataList[name].data)).toBeTruthy();
+        expect(loader.dataList[name].data.length).toBeGreaterThan(0);
+        expect(loader.dataList[name].data[0].hasOwnProperty('id')).toBeTruthy();
+        expect(loader.dataList[name].data[0].hasOwnProperty('phone')).toBeTruthy();
+        expect(loader.dataList[name].data[0].hasOwnProperty('refDate')).toBeTruthy();
+        expect(loader.dataList[name].data[0].hasOwnProperty('chp')).toBeTruthy();
+        expect(loader.dataList[name].data[0].hasOwnProperty('name')).toBeTruthy();
+        expect(loader.dataList[name].data[0].hasOwnProperty('location')).toBeTruthy();
+    }
 });
