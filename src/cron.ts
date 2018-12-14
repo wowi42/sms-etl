@@ -46,6 +46,7 @@ async function getConfigurationFiles() {
                 process.exit(1);
             }
         }
+
     }
 }
 
