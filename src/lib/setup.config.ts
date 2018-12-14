@@ -6,6 +6,7 @@ import {DbConfig} from '../../configuration/loaders/sql';
 import {Database} from '../../lib/db';
 import {File} from '../../lib/file';
 import {createReadStream} from 'fs';
+import { Log } from '../../lib/log';
 
 export class SetupConfig {
 
@@ -56,28 +57,51 @@ export class SetupConfig {
                 const sqlFile = rawConfig.configuration.sqlfile;
                 const loaderName = rawConfig.configuration.connection_name;
 
-                const db = await Database.connect(
-                    loaderName,
-                    {
-                        database: dbConfig.database_name,
-                        dialect: dbConfig.dialect,
-                        host: dbConfig.host,
-                        password: dbConfig.password,
-                        port: dbConfig.port,
-                        user: dbConfig.user,
+                try {
+                    const db = await Database.connect(loaderName,
+                            {
+                                database: dbConfig.database_name,
+                                dialect: dbConfig.dialect,
+                                host: dbConfig.host,
+                                password: dbConfig.password,
+                                port: dbConfig.port,
+                                user: dbConfig.user,
+                            }
+                        );
+
+                    sqlSetup.push({
+                        db,
+                        name: loaderName,
+                        sqlFile: new File(),
+                        sqlFilePath: sqlFile,
                     });
 
-                sqlSetup.push({
-                    db,
-                    name: loaderName,
-                    sqlFile: new File(),
-                    sqlFilePath: sqlFile,
-                });
-
+                } catch (e) {
+                    Log.error(e, {logger: 'SetupConfig'});
+                }
             }
         }
 
         return sqlSetup;
     }
 
+    public subscription() {
+        const subscriptionConfig = [];
+
+        for (const rawConfig of this.configs) {
+            if (rawConfig.type === ConfigurationTypes.SUBSCRIPTION) {
+                const apiCallId = rawConfig.configuration.api_call_id;
+                const campaign = rawConfig.configuration.campaign;
+                const subscriptionMap = rawConfig.configuration.subscription_map;
+
+                subscriptionConfig.push({
+                    apiCallId,
+                    campaign,
+                    subscriptionMap,
+                });
+            }
+        }
+
+        return subscriptionConfig;
+    }
 }

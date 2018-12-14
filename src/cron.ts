@@ -4,7 +4,21 @@ import {Util} from './lib/util';
 import {Log} from '../lib/log';
 import Config from '../configuration/system';
 import {ConfigurationTypes, SchemaValidator} from '../configuration/schema-validator';
-import {Loader} from '../configuration/loader';
+import {SetupConfig} from './lib/setup.config';
+import {Loader, CsvSetupConfig, HttpSetupConfig, SqlSetupConfig} from '../configuration/loader';
+import {Extractor} from '../lib/extractor';
+import { SMSApi } from '../lib/sms-api';
+
+interface ConfigurationMap {
+    csv: CsvSetupConfig[];
+    http: HttpSetupConfig[];
+    sql: SqlSetupConfig[];
+    subscription: {
+        apiCallId: any;
+        campaign: any;
+        subscriptionMap: any;
+    }[];
+}
 
 if (!path.isAbsolute(Config.configPath as string)) {
     throw new Error(`Path to configuration provided should be an absolute path`);
@@ -24,38 +38,54 @@ async function getConfigurationFiles() {
         process.exit(1);
     }
 
-    let dirList:string[] = [];
+    const dirList:string[] = [];
 
     try {
-        dirList = await Util.readDirectory(Config.configPath as string);
+        const dirs = await Util.readDirectory(Config.configPath as string);
+        dirList.push(...dirs);
         Log.info('Number of configuration directories: ' + dirList.length);
     } catch (e) {
         Log.error(e, {logger: 'ReadDirectory-Cron'});
         process.exit(1);
     }
 
+    return dirList;
+}
+
+async function mainProcessor(dirList:string[]) {
+    const subscriptionPackets = [];
+
     for (const folder of dirList) {
+
         const directory = path.resolve(Config.configPath as string, folder);
 
-        let configurations:{ type:ConfigurationTypes; configuration:any; }[] | null = [];
-
         if (fs.statSync(directory).isDirectory()) {
-            configurations = await processConfigurationFiles(directory);
+            const configurations = await processConfigurationFiles(directory);
             if (!configurations) {
                 Log.error('Error occured while processing directory-name: ' + folder + ' configurations');
                 process.exit(1);
             }
+
+            const subscriptions = await subscriptionDataProcessor(configurations as ConfigurationMap);
+            subscriptionPackets.push(...subscriptions);
         }
 
+    }
+
+    for (const packet of subscriptionPackets) {
+        const smsApi = new SMSApi();
+        await smsApi.subscribe(packet);
     }
 }
 
 async function processConfigurationFiles(dir:string) {
 
-    let configFilesList:string[] = [];
+    const configFilesList:string[] = [];
 
     try {
-        configFilesList = await Util.readDirectory(dir);
+        const configFile = await Util.readDirectory(dir);
+        configFilesList.push(...configFile);
+
         Log.info('Number of configuration files: ' + configFilesList.length);
     } catch (e) {
         Log.error(e, {logger: 'ReadConfigDir - Cron'});
@@ -105,9 +135,45 @@ async function processConfigurationFiles(dir:string) {
     const schemaValidator = new SchemaValidator(configurationFiles);
 
     try {
-        return await schemaValidator.run();
+        const configs = await schemaValidator.run();
+        const setup = new SetupConfig(configs);
+
+        return {
+            csv: setup.csv(),
+            http: setup.http(),
+            sql: await setup.sql(),
+            subscription: setup.subscription(),
+        };
     } catch (e) {
         Log.error(e, {logger: 'SchemaValidator - Cron'});
         return null;
     }
+}
+
+async function subscriptionDataProcessor(configuration:ConfigurationMap) {
+    const subscriptionPackets = [];
+
+    for (const type of ['sql', 'csv', 'http']) {
+        const loader = new Loader();
+        await loader.load(configuration[type], type as any);
+        await loader.loadData();
+
+        for (const subscription of configuration.subscription) {
+            const extractor = new Extractor(
+                'subscription',
+                subscription.apiCallId,
+                subscription.campaign,
+            );
+
+            for (const dataKey of Object.keys(loader.dataList)) {
+                extractor.data = loader.dataList[dataKey];
+                extractor.dataRequirements = subscription.subscriptionMap;
+
+                subscriptionPackets.push(...extractor.transformSubscriptionData());
+            }
+        }
+
+    }
+
+    return subscriptionPackets;
 }
