@@ -7,7 +7,7 @@ import {ConfigurationTypes, SchemaValidator} from '../configuration/schema-valid
 import {SetupConfig} from './lib/setup.config';
 import {Loader, CsvSetupConfig, HttpSetupConfig, SqlSetupConfig} from '../configuration/loader';
 import {Extractor} from '../lib/extractor';
-import { SMSApi } from '../lib/sms-api';
+// import {SMSApi} from '../lib/sms-api';
 
 interface ConfigurationMap {
     csv: CsvSetupConfig[];
@@ -66,16 +66,16 @@ async function mainProcessor(dirList:string[]) {
                 process.exit(1);
             }
 
-            const subscriptions = await subscriptionDataProcessor(configurations as ConfigurationMap);
-            subscriptionPackets.push(...subscriptions);
+/*             const subscriptions = await subscriptionDataProcessor(configurations as ConfigurationMap);
+            subscriptionPackets.push(...subscriptions); */
         }
 
     }
 
-    for (const packet of subscriptionPackets) {
+/*     for (const packet of subscriptionPackets) {
         const smsApi = new SMSApi();
         await smsApi.subscribe(packet);
-    }
+    } */
 }
 
 async function processConfigurationFiles(dir:string) {
