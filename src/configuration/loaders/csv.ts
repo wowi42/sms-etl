@@ -1,5 +1,5 @@
 import {ReadStream} from 'fs';
-import {File} from '../../lib/file';
+import {File} from '../../../lib/file';
 
 export class CSVLoader {
 

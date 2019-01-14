@@ -2,10 +2,10 @@ import * as fs from 'fs';
 import * as path from 'path';
 import {Util} from './lib/util';
 import {Log} from '../lib/log';
-import Config from '../configuration/system';
-import {ConfigurationTypes, SchemaValidator} from '../configuration/schema-validator';
+import Config from './configuration/system';
+import {ConfigurationTypes, SchemaValidator} from './configuration/schema-validator';
 import {SetupConfig} from './lib/setup.config';
-import {Loader, CsvSetupConfig, HttpSetupConfig, SqlSetupConfig} from '../configuration/loader';
+import {Loader, CsvSetupConfig, HttpSetupConfig, SqlSetupConfig} from './configuration/loader';
 import {Extractor} from '../lib/extractor';
 // import {SMSApi} from '../lib/sms-api';
 
@@ -66,16 +66,17 @@ async function mainProcessor(dirList:string[]) {
                 process.exit(1);
             }
 
-/*             const subscriptions = await subscriptionDataProcessor(configurations as ConfigurationMap);
-            subscriptionPackets.push(...subscriptions); */
+            const subscriptions = await subscriptionDataProcessor(configurations as ConfigurationMap);
+            subscriptionPackets.push(...subscriptions);
         }
 
     }
 
-/*     for (const packet of subscriptionPackets) {
-        const smsApi = new SMSApi();
-        await smsApi.subscribe(packet);
-    } */
+    for (const packet of subscriptionPackets) {
+        console.log(packet);
+        // const smsApi = new SMSApi();
+        // await smsApi.subscribe(packet);
+    }
 }
 
 async function processConfigurationFiles(dir:string) {

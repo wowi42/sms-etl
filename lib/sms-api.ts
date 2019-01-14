@@ -1,4 +1,4 @@
-import Config from '../configuration/system';
+import Config from '../src/configuration/system';
 import axios from 'axios';
 import {SubscriptionRequestBody} from './extractor';
 

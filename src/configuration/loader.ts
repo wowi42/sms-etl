@@ -1,10 +1,10 @@
 import {SQLLoader} from './loaders/sql';
 import {HttpConfig, HTTPLoader} from './loaders/http';
-import {Database} from '../lib/db';
-import {File} from '../lib/file';
+import {Database} from '../../lib/db';
+import {File} from '../../lib/file';
 import {ReadStream} from 'fs';
 import {CSVLoader} from './loaders/csv';
-import { HTTPClient } from '../lib/http-client';
+import { HTTPClient } from '../../lib/http-client';
 
 export interface SqlSetupConfig {
     name:string;

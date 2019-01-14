@@ -1,5 +1,5 @@
-import {Database} from '../../lib/db';
-import {File} from '../../lib/file';
+import {Database} from '../../../lib/db';
+import {File} from '../../../lib/file';
 
 export interface DbConfig {
     host:string;

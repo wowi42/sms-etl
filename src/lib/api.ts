@@ -4,7 +4,7 @@ import * as compression from 'compression';
 import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
 import * as helmet from 'helmet';
-import Config from '../../configuration/system';
+import Config from '../configuration/system';
 
 const PATHS = {
     frontEnd: path.resolve(Config.rootUri, 'app', 'dist'),

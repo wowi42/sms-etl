@@ -1,6 +1,6 @@
 
 import * as winston from 'winston';
-import Config from '../configuration/system';
+import Config from '../src/configuration/system';
 
 require('winston-daily-rotate-file');
 

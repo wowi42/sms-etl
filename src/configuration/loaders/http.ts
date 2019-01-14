@@ -1,4 +1,4 @@
-import {HTTPClient} from '../../lib/http-client';
+import {HTTPClient} from '../../../lib/http-client';
 
 export interface HttpAuth {
     secret:{ // API_SECRET, APP_SECRET, CLIENT_SECRET, APP_PASSWORD
