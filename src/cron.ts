@@ -52,32 +52,6 @@ async function getConfigurationFiles() {
     return dirList;
 }
 
-async function mainProcessor(dirList:string[]) {
-    const subscriptionPackets = [];
-
-    for (const folder of dirList) {
-
-        const directory = path.resolve(Config.configPath as string, folder);
-
-        if (fs.statSync(directory).isDirectory()) {
-            const configurations = await processConfigurationFiles(directory);
-            if (!configurations) {
-                Log.error('Error occured while processing directory-name: ' + folder + ' configurations');
-                process.exit(1);
-            }
-
-            const subscriptions = await subscriptionDataProcessor(configurations as ConfigurationMap);
-            subscriptionPackets.push(...subscriptions);
-        }
-
-    }
-
-    for (const packet of subscriptionPackets) {
-        const smsApi = new SMSApi();
-        await smsApi.subscribe(packet);
-    }
-}
-
 async function processConfigurationFiles(dir:string) {
 
     const configFilesList:string[] = [];
@@ -177,3 +151,31 @@ async function subscriptionDataProcessor(configuration:ConfigurationMap) {
 
     return subscriptionPackets;
 }
+
+/*
+async function mainProcessor(dirList:string[]) {
+    const subscriptionPackets = [];
+
+    for (const folder of dirList) {
+
+        const directory = path.resolve(Config.configPath as string, folder);
+
+        if (fs.statSync(directory).isDirectory()) {
+            const configurations = await processConfigurationFiles(directory);
+            if (!configurations) {
+                Log.error('Error occured while processing directory-name: ' + folder + ' configurations');
+                process.exit(1);
+            }
+
+            const subscriptions = await subscriptionDataProcessor(configurations as ConfigurationMap);
+            subscriptionPackets.push(...subscriptions);
+        }
+
+    }
+
+    for (const packet of subscriptionPackets) {
+        const smsApi = new SMSApi();
+        await smsApi.subscribe(packet);
+    }
+}
+*/
