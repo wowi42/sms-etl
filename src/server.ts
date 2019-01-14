@@ -1,7 +1,7 @@
 import {app} from './lib/api';
 import * as http from 'http';
 import * as dotenv from 'dotenv';
-import Config from '../configuration/system';
+import Config from './configuration/system';
 
 dotenv.config();
 

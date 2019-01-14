@@ -1,8 +1,8 @@
-import {HttpSetupConfig, SqlSetupConfig, CsvSetupConfig} from '../../configuration/loader';
-import {ConfigurationTypes} from '../../configuration/schema-validator';
-import {HttpConfig, HTTPLoader} from '../../configuration/loaders/http';
+import {HttpSetupConfig, SqlSetupConfig, CsvSetupConfig} from '../configuration/loader';
+import {ConfigurationTypes} from '../configuration/schema-validator';
+import {HttpConfig, HTTPLoader} from '../configuration/loaders/http';
 import {HTTPClient} from '../../lib/http-client';
-import {DbConfig} from '../../configuration/loaders/sql';
+import {DbConfig} from '../configuration/loaders/sql';
 import {Database} from '../../lib/db';
 import {File} from '../../lib/file';
 import {createReadStream} from 'fs';

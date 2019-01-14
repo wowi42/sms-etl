@@ -2,12 +2,12 @@ import * as fs from 'fs';
 import * as path from 'path';
 import {Util} from './lib/util';
 import {Log} from '../lib/log';
-import Config from '../configuration/system';
-import {ConfigurationTypes, SchemaValidator} from '../configuration/schema-validator';
+import Config from './configuration/system';
+import {ConfigurationTypes, SchemaValidator} from './configuration/schema-validator';
 import {SetupConfig} from './lib/setup.config';
-import {Loader, CsvSetupConfig, HttpSetupConfig, SqlSetupConfig} from '../configuration/loader';
+import {Loader, CsvSetupConfig, HttpSetupConfig, SqlSetupConfig} from './configuration/loader';
 import {Extractor} from '../lib/extractor';
-import { SMSApi } from '../lib/sms-api';
+// import {SMSApi} from '../lib/sms-api';
 
 interface ConfigurationMap {
     csv: CsvSetupConfig[];
