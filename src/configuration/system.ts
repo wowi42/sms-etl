@@ -9,9 +9,7 @@ import * as path from 'path';
 
 class SystemConfig {
 
-    readonly rootUri = path.resolve(__dirname, '..');
-
-    readonly schemaDir = path.resolve(__dirname, '..', 'schemas');
+    readonly rootUri = path.resolve(__dirname, '..', '..');
 
     readonly port = 5005;
 

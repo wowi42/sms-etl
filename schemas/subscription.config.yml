@@ -14,14 +14,21 @@ subscription_map:
 
   others:
     - key:
-      type: string
-    - value:
-      type: string
+        type: string
+        required: false
+
+      value:
+        type: string
+        required: false
+
   metadata:
     - key:
         type: string
+        required: false
+
       value:
         type: string
+        required: false
 
 api_call_id:
   type: string
