@@ -68,3 +68,12 @@ In order to use the service on your server you have to understand the follow:
 1. git clone the repository `git clone https://bitbucket.org/livinggoods/sms-api-etl.git`
 2. install dependencies `npm install`
 3. create `.env` file on the root of the project
+
+#### Common Issues
+
+1. If `npm install` fails to install, please ensure to delete your `package-lock.json` and try `npm install` again.
+2. If errors on file not found especially `configuration file` or `logs directory` ensure to check your `.env` file that it is up to date.
+
+## Usage
+
+This section we discuss how to use the `SMS-ETL` service.
