@@ -1,22 +1,17 @@
 language: node_js
-
 branches:
   only:
   - master
   - develop
-
 node_js:
-    - lts/*
-
+- lts/*
 before_install:
-    - npm i -g typescript tslint
-    - npm i
-
+- npm i -g typescript tslint
+- npm i
 script:
-    - npm run lint
-    - npm test
-
+- npm run lint
+- npm test
 notifications:
-    email: false
-    slack: pxTMV4X1e+O8zRPG995zumgzVBflpcVlsJDIoS2b4I5hRNeGGM6+nw7+ZX+LiPlazw+hGeScLsXkm3letE7/b027Bs68UZsJn8PQ8sDy20YA4gcm5ypkzbZfflHlHzr3EFD/J4hSvfL524rpQvMMgt459b2AovfifH0y1ENbAWIr6G+CZI+fsW9w0Rhtl8DxKUkR1Gb6IBrkvg/x9qP9DEW8xtH546mGywLkBwF73M6Iicx0UkY05DKT4GOoJgEI5zm8FdLOefhTE5cY6a9OOgV5e6zQ7PbY3eCGWQRsAXQAmJGVypiKpcS/MrUuUQLjC8ykgqdOgdCBC+Lc8PBAVhBEXCBu/mBzjFZNafLC37n3Jc9oHynCJ3zwqyOKvOHTiJhO/6aGdNOhMKuVV88k94/KbpGMJI6U72JxE7RiIDOTWpHZbsCVvAVysi0TOYjoTbqjKuy8RoulyW+jj2X1lOFHZKtiuMKMON/gDiUkD+TVxNkm0UmvWKc/EOkFuDB51uM/lup0pGSQGtWQ40+EAGgubePDAxCDP1K05VXGcykzD2X+MF1+BUS1LH3G5zd9hjJHc9FXuzyisM2UTd9n8pUKHEwI55JG84FJ3sSMxrSqQa1wCoMV0CWhpCgZ2mKWAsChZSsMRKJJlYTHLQKrckPTTY/z1aN8oll0snQdCE8=
-
+  email: false
+  slack:
+    secure: nPWDEvRCg8UONM+tlFTYhoaRvElxfI1stdUaw5D6LViDnuVAc0HKli9feJDpOF/gXJnd5GO43pigWKW0IOB1p2UhT6KsLVMspt7096QxUJ3GbauMaLoW9IIXq5eeq6hZlJnDGn1CQ0YVP8d9HX1VEFhmTWsckmOL09zuSXs0ZLCJow/YogYU2MsONEziksgyBYhSJY0K4M8+nBc6mamA29ANRQ3cmX9YF8vMp3M17/bcVlYj1XeXmlOGEvBziDBoQkH0/j4iefOCv+DTba1cr0D6j55KS3YwjtqUm9B5EVLNCU9jYhC+a1hYHZIimyZARqGuachgd6QLtaz1v3S0ekfZn6h9zq3AW5lMuUI/1qm3TMeEidM4ZBa7M8L7JgQtrMy6YbRtmIeFvNZ8d5UI+MMUhXbMNGNwhAu+JAu1gbXGy0ncZT4meJlte12Xz3acs2YLEMR9CpNOPM0NGLa3RnkulCmk+uhA09PHGJpO/xJLYKwjJCRWLjhQue1kOawP3autcas/yiSnP7Ns05zOHK7lCsEDEaXM6MVtXDiE+P3dxqKOZFosxCR80Gi6P/z/DSayscmjUzKTRey/pMadeEhzeKvPhLCicdeKq+PbSsBvxxXKEhmM3gX8aAf63p5UxC5KO2ehyHpnt7BWZFiOA/LkjlMta1V1SHgNbhk3xgs=
