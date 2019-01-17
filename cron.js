@@ -8,18 +8,15 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-if (process.env.NODE_ENV !== 'production') {
-    require('ts-node/register');
-    const {sqlIntegration, csvIntegration, httpIntegration} = require('./src/util/processor');
-} else {
-    const {sqlIntegration, csvIntegration, httpIntegration} = require('./out/util/processor');
-}
+const {sqlIntegration, csvIntegration, httpIntegration} = require('./out/src/util/processor');
 
 /**
  * Scheduled to run after every 30s
  * */
-cron.schedule('*/30 * * * *', () => {
+cron.schedule('*/45 * * * *', () => {
+    console.log('Process started');
     sqlIntegration().
         then(() => csvIntegration()).
-            then(() => httpIntegration());
+            then(() => httpIntegration()).
+            then(() => console.log('Process done!'))
 });

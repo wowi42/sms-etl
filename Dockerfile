@@ -13,6 +13,6 @@ WORKDIR /var/www/
 
 RUN npm i
 
-RUN tsc --diagnostics
+RUN npm run compile
 
 CMD ["npm", "start"]

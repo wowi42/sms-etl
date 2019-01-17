@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+    - lts/*
+before_install:
+    - npm i -g typescript tslint
+    - npm i
+script:
+    - npm run lint
+    - npm test
+
+notifications:
+    email: false
+    slack:
+        rooms:
+            secure: pxTMV4X1e+O8zRPG995zumgzVBflpcVlsJDIoS2b4I5hRNeGGM6+nw7+ZX+LiPlazw+hGeScLsXkm3letE7/b027Bs68UZsJn8PQ8sDy20YA4gcm5ypkzbZfflHlHzr3EFD/J4hSvfL524rpQvMMgt459b2AovfifH0y1ENbAWIr6G+CZI+fsW9w0Rhtl8DxKUkR1Gb6IBrkvg/x9qP9DEW8xtH546mGywLkBwF73M6Iicx0UkY05DKT4GOoJgEI5zm8FdLOefhTE5cY6a9OOgV5e6zQ7PbY3eCGWQRsAXQAmJGVypiKpcS/MrUuUQLjC8ykgqdOgdCBC+Lc8PBAVhBEXCBu/mBzjFZNafLC37n3Jc9oHynCJ3zwqyOKvOHTiJhO/6aGdNOhMKuVV88k94/KbpGMJI6U72JxE7RiIDOTWpHZbsCVvAVysi0TOYjoTbqjKuy8RoulyW+jj2X1lOFHZKtiuMKMON/gDiUkD+TVxNkm0UmvWKc/EOkFuDB51uM/lup0pGSQGtWQ40+EAGgubePDAxCDP1K05VXGcykzD2X+MF1+BUS1LH3G5zd9hjJHc9FXuzyisM2UTd9n8pUKHEwI55JG84FJ3sSMxrSqQa1wCoMV0CWhpCgZ2mKWAsChZSsMRKJJlYTHLQKrckPTTY/z1aN8oll0snQdCE8=
+
