@@ -15,4 +15,6 @@ RUN npm i
 
 RUN npm run compile
 
+RUN echo 'STARTING...'
+
 CMD ["npm", "start"]
