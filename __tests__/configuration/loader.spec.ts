@@ -2,12 +2,13 @@ import {SchemaValidator, ConfigurationTypes} from '../../src/configuration/schem
 import * as path from 'path';
 import Config from '../../src/configuration/system';
 import {Database} from '../../lib/db';
-import {DbConfig} from '../../src/configuration/loaders/sql';
+import {DbConfig, SQLLoader} from '../../src/configuration/loaders/sql';
 import {File} from '../../lib/file';
-import {Loader, SqlSetupConfig, CsvSetupConfig, HttpSetupConfig} from '../../src/configuration/loader';
+import {SqlSetupConfig, CsvSetupConfig, HttpSetupConfig} from '../../src/configuration/loader';
 import {createReadStream} from 'fs';
 import {HttpConfig, HTTPLoader} from '../../src/configuration/loaders/http';
 import {HTTPClient} from '../../lib/http-client';
+import { CSVLoader } from '../../src/configuration/loaders/csv';
 
 jest.mock('../../lib/db');
 jest.mock('../../lib/file');
@@ -73,20 +74,30 @@ test('Should Get SQL Loader array', async () => {
 
     expect(sqlSetup.length).toBeGreaterThan(0);
 
-    const loader = new Loader();
+    const sqlData = [];
+    for (const config of sqlSetup) {
+        const loader = new SQLLoader(
+            config.name, config.db,
+            config.sqlFilePath,
+            config.sqlFile
+        );
 
-    await loader.load(sqlSetup as SqlSetupConfig[], 'sql');
-
-    await loader.loadData();
-
-    for (const name of Object.keys(loader.dataList)) {
-        expect(Array.isArray(loader.dataList[name])).toBeTruthy();
-        expect(loader.dataList[name].length).toBeGreaterThan(0);
-        expect(loader.dataList[name][0].hasOwnProperty('id')).toBeTruthy();
-        expect(loader.dataList[name][0].hasOwnProperty('phone')).toBeTruthy();
-        expect(loader.dataList[name][0].hasOwnProperty('refDate')).toBeTruthy();
-        expect(loader.dataList[name][0].hasOwnProperty('chp')).toBeTruthy();
+        const data = await loader.loadData();
+        sqlData.push({
+            name: config.name,
+            data: [...data]
+        });
     }
+
+    expect(Array.isArray(sqlData)).toBeTruthy();
+    expect(sqlData.length).toBeGreaterThan(0);
+    expect(sqlData[0].hasOwnProperty('name')).toBeTruthy();
+    expect(Array.isArray(sqlData[0].data)).toBeTruthy();
+    expect(sqlData[0].data.length).toBeGreaterThan(0);
+    expect(sqlData[0].data[0].hasOwnProperty('id')).toBeTruthy();
+    expect(sqlData[0].data[0].hasOwnProperty('phone')).toBeTruthy();
+    expect(sqlData[0].data[0].hasOwnProperty('refDate')).toBeTruthy();
+    expect(sqlData[0].data[0].hasOwnProperty('chp')).toBeTruthy();
 
 });
 
@@ -111,21 +122,27 @@ test('Should Get CSV Loader array', async () => {
 
     expect(csvSetup.length).toBeGreaterThan(0);
 
-    const loader = new Loader();
+    const csvData = [];
+    for (const config of csvSetup) {
+        const loader = new CSVLoader(config.name, config.filestream, config.Reader);
 
-    await loader.load(csvSetup as CsvSetupConfig[], 'csv');
+        const data = await loader.loadData();
 
-    await loader.loadData();
-
-    for (const name of Object.keys(loader.dataList)) {
-        expect(Array.isArray(loader.dataList[name])).toBeTruthy();
-        expect(loader.dataList[name].length).toBeGreaterThan(0);
-        expect(loader.dataList[name][0].hasOwnProperty('id')).toBeTruthy();
-        expect(loader.dataList[name][0].hasOwnProperty('phone')).toBeTruthy();
-        expect(loader.dataList[name][0].hasOwnProperty('refDate')).toBeTruthy();
-        expect(loader.dataList[name][0].hasOwnProperty('chp')).toBeTruthy();
-        expect(loader.dataList[name][0].hasOwnProperty('name')).toBeTruthy();
+        csvData.push({
+            name: config.name,
+            data: [...data]
+        });
     }
+
+    expect(Array.isArray(csvData)).toBeTruthy();
+    expect(csvData.length).toBeGreaterThan(0);
+    expect(csvData[0].hasOwnProperty('name')).toBeTruthy();
+    expect(Array.isArray(csvData[0].data)).toBeTruthy();
+    expect(csvData[0].data.length).toBeGreaterThan(0);
+    expect(csvData[0].data[0].hasOwnProperty('id')).toBeTruthy();
+    expect(csvData[0].data[0].hasOwnProperty('phone')).toBeTruthy();
+    expect(csvData[0].data[0].hasOwnProperty('refDate')).toBeTruthy();
+    expect(csvData[0].data[0].hasOwnProperty('chp')).toBeTruthy();
 });
 
 test('Should Get HTTP Loader array', async () => {
@@ -149,20 +166,25 @@ test('Should Get HTTP Loader array', async () => {
 
     expect(httpSetup.length).toBeGreaterThan(0);
 
-    const loader = new Loader();
+    const httpData = [];
+    for (const config of httpSetup) {
+        const loader = new HTTPLoader(config.httpConfig, config.httpClient);
 
-    await loader.load(httpSetup as HttpSetupConfig[], 'http');
+        const data = await loader.loadData();
 
-    await loader.loadData();
-
-    for (const name of Object.keys(loader.dataList)) {
-        expect(Array.isArray(loader.dataList[name])).toBeTruthy();
-        expect(loader.dataList[name].length).toBeGreaterThan(0);
-        expect(loader.dataList[name][0].hasOwnProperty('id')).toBeTruthy();
-        expect(loader.dataList[name][0].hasOwnProperty('phone')).toBeTruthy();
-        expect(loader.dataList[name][0].hasOwnProperty('refDate')).toBeTruthy();
-        expect(loader.dataList[name][0].hasOwnProperty('chp')).toBeTruthy();
-        expect(loader.dataList[name][0].hasOwnProperty('name')).toBeTruthy();
-        expect(loader.dataList[name][0].hasOwnProperty('location')).toBeTruthy();
+        httpData.push({
+            name: config.name,
+            data: [...data]
+        });
     }
+
+    expect(Array.isArray(httpData)).toBeTruthy();
+    expect(httpData.length).toBeGreaterThan(0);
+    expect(httpData[0].hasOwnProperty('name')).toBeTruthy();
+    expect(Array.isArray(httpData[0].data)).toBeTruthy();
+    expect(httpData[0].data.length).toBeGreaterThan(0);
+    expect(httpData[0].data[0].hasOwnProperty('id')).toBeTruthy();
+    expect(httpData[0].data[0].hasOwnProperty('phone')).toBeTruthy();
+    expect(httpData[0].data[0].hasOwnProperty('refDate')).toBeTruthy();
+    expect(httpData[0].data[0].hasOwnProperty('chp')).toBeTruthy();
 });
