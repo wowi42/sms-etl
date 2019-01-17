@@ -1,9 +1,17 @@
 language: node_js
+
+branches:
+  only:
+  - master
+  - develop
+
 node_js:
     - lts/*
+
 before_install:
     - npm i -g typescript tslint
     - npm i
+
 script:
     - npm run lint
     - npm test
