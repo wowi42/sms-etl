@@ -1,8 +1,8 @@
 import * as path from 'path';
-import Config from '../../configuration/system';
-import {SchemaValidator, ConfigurationTypes} from '../../configuration/schema-validator';
-import {HttpSetupConfig, Loader} from '../../configuration/loader';
-import {HttpConfig, HTTPLoader} from '../../configuration/loaders/http';
+import Config from '../../src/configuration/system';
+import {SchemaValidator, ConfigurationTypes} from '../../src/configuration/schema-validator';
+import {HttpSetupConfig, Loader} from '../../src/configuration/loader';
+import {HttpConfig, HTTPLoader} from '../../src/configuration/loaders/http';
 import {HTTPClient} from '../../lib/http-client';
 import {Extractor} from '../../lib/extractor';
 
@@ -53,8 +53,9 @@ test('Should generate subscription packet', async () => {
             const apiCallId = rawConfig.configuration.api_call_id;
             const campaign = rawConfig.configuration.campaign;
             const subscriptionMap = rawConfig.configuration.subscription_map;
+            const sourceName = rawConfig.configuration.sourceName;
 
-            const extractor = new Extractor('subscription', apiCallId, campaign);
+            const extractor = new Extractor('subscription', apiCallId, sourceName, campaign);
 
             for (const dataKey of Object.keys(httpLoader.dataList)) {
                 extractor.data = httpLoader.dataList[dataKey];

@@ -6,3 +6,7 @@ unsubscription_map:
 api_call_id: "some-campaign-subscrption"
 
 campaign: 23
+
+sourceType: 'http'
+
+sourceName: 'Test Rest API'

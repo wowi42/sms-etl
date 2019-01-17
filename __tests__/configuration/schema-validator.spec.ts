@@ -1,6 +1,6 @@
 import * as path from 'path';
-import {SchemaValidator, ConfigurationTypes} from '../../configuration/schema-validator';
-import Config from '../../configuration/system';
+import {SchemaValidator, ConfigurationTypes} from '../../src/configuration/schema-validator';
+import Config from '../../src/configuration/system';
 
 const configsRoot = path.join(Config.rootUri, '__tests__', 'samples');
 
@@ -29,8 +29,8 @@ const testConfigFilePaths = [
 
 test('Should return valid configuration objects', async () => {
     const validator = new SchemaValidator(testConfigFilePaths);
-
     const processedConfig = await validator.run();
+
     expect(validator.acceptedConfigurations.length).toBe(testConfigFilePaths.length);
     expect(processedConfig.length).toBe(testConfigFilePaths.length);
 });

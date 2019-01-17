@@ -35,7 +35,7 @@ export const sourceReaders = {
         for (const dir of dirs) {
             configs.push({
                 type: ConfigurationTypes.SQL,
-                path: path.resolve(dir),
+                path: path.resolve(sql, dir),
             });
         }
 
@@ -75,7 +75,7 @@ export const sourceReaders = {
                 });
 
             } catch (e) {
-                Log.error(e, {logger: 'SetupConfig'});
+                Log.error(e, {logger: 'SetupConfig', Configuration: loaderName});
             }
         }
 
@@ -105,7 +105,7 @@ export const sourceReaders = {
         for (const dir of dirs) {
             configs.push({
                 type: ConfigurationTypes.CSV,
-                path: path.resolve(dir),
+                path: path.resolve(csv, dir),
             });
         }
 
@@ -124,7 +124,7 @@ export const sourceReaders = {
 
             csvSetup.push({
                 name: rawConfig.configuration.key,
-                filestream: createReadStream(rawConfig.configuration.filepath),
+                filestream: createReadStream(path.resolve(configDir, '..', 'csv', rawConfig.configuration.filepath)),
                 Reader: new File(),
             });
 
@@ -156,7 +156,7 @@ export const sourceReaders = {
         for (const dir of dirs) {
             configs.push({
                 type: ConfigurationTypes.HTTP,
-                path: path.resolve(dir),
+                path: path.resolve(http, dir),
             });
         }
 
@@ -186,7 +186,7 @@ export const sourceReaders = {
 };
 
 export const dataMapReaders = {
-   async subscribers(configDir) {
+   async subscribers(configDir:string, sourceType:string) {
         const subscription = `${configDir}/src-subscribers/`;
 
         try {
@@ -210,7 +210,7 @@ export const dataMapReaders = {
         for (const dir of dirs) {
             configs.push({
                 type: ConfigurationTypes.SUBSCRIPTION,
-                path: path.resolve(dir),
+                path: path.resolve(subscription, dir),
             });
         }
 
@@ -226,16 +226,27 @@ export const dataMapReaders = {
         const subscriptionConfig = [];
 
         for (const rawConfig of processedConfig) {
-            const apiCallId = rawConfig.configuration.api_call_id;
-            const campaign = rawConfig.configuration.campaign;
-            const subscriptionMap = rawConfig.configuration.subscription_map;
 
-            subscriptionConfig.push({
-                apiCallId,
-                campaign,
-                subscriptionMap,
-            });
+            /**
+             * Process only files that are of the required sourceType (csv | sql | http)
+             */
+            if (rawConfig.configuration.sourceType === sourceType) {
+                const apiCallId = rawConfig.configuration.api_call_id;
+                const campaign = rawConfig.configuration.campaign;
+                const subscriptionMap = rawConfig.configuration.subscription_map;
+                const sourceName = rawConfig.configuration.sourceName;
+
+                subscriptionConfig.push({
+                    apiCallId,
+                    campaign,
+                    subscriptionMap,
+                    sourceName,
+                });
+            }
+
         }
+
+        return subscriptionConfig;
    },
     unsubscribers() {},
 };

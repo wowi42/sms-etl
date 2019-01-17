@@ -11,5 +11,5 @@ api_authentication:
     header: 'x-auth-id'
 
 webhook:
-  uri: 'https://sample.org/some/endpoint'
+  uri: 'https://example.com/'
   method: 'GET'

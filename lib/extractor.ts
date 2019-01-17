@@ -42,7 +42,7 @@ export class Extractor {
         'referenceDate': (val:string) => val && val !== '' && moment(val, 'YYYY-MM-DD').isValid(),
         'typeOfSubscriber': (val:string) => val && val !== '',
         'unsubscriptionType': (val:string) => val && val !== '',
-        'householdPhonenumber': (val:string) => val && val !== '' && typeof val === 'string',
+        // 'householdPhonenumber': (val:string) => val && val !== '' && typeof val === 'string',
     };
 
     private _dataset:any[];
@@ -60,6 +60,7 @@ export class Extractor {
     constructor(
         public readonly apiCallType:'subscription' | 'unsubscription',
         public readonly apiCallId:string,
+        public readonly configName:string,
         private readonly campaign:number,
     ) { }
 

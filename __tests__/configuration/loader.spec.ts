@@ -1,12 +1,12 @@
-import {SchemaValidator, ConfigurationTypes} from '../../configuration/schema-validator';
+import {SchemaValidator, ConfigurationTypes} from '../../src/configuration/schema-validator';
 import * as path from 'path';
-import Config from '../../configuration/system';
+import Config from '../../src/configuration/system';
 import {Database} from '../../lib/db';
-import {DbConfig} from '../../configuration/loaders/sql';
+import {DbConfig} from '../../src/configuration/loaders/sql';
 import {File} from '../../lib/file';
-import {Loader, SqlSetupConfig, CsvSetupConfig, HttpSetupConfig} from '../../configuration/loader';
+import {Loader, SqlSetupConfig, CsvSetupConfig, HttpSetupConfig} from '../../src/configuration/loader';
 import {createReadStream} from 'fs';
-import {HttpConfig, HTTPLoader} from '../../configuration/loaders/http';
+import {HttpConfig, HTTPLoader} from '../../src/configuration/loaders/http';
 import {HTTPClient} from '../../lib/http-client';
 
 jest.mock('../../lib/db');
@@ -27,14 +27,6 @@ const configLoader = [
     {
         type: ConfigurationTypes.HTTP,
         path: path.join(samplesPath, 'test-http.yml')
-    },
-    {
-        type: ConfigurationTypes.UNSUBSCRIPTION,
-        path: path.join(samplesPath, 'test-unsubscription.yml')
-    },
-    {
-        type: ConfigurationTypes.SUBSCRIPTION,
-        path: path.join(samplesPath, 'test-subscription.yml')
     },
 ];
 

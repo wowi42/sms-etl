@@ -13,7 +13,8 @@ module.exports = {
     coverageDirectory: 'coverage',
     coverageReporters: ['html'],
     globals: {
-        '__DEV__': true
+        '__DEV__': true,
+        'ENV': 'test'
     },
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
     notify: true,
@@ -30,12 +31,13 @@ module.exports = {
         '<rootDir>/dist/',
         '<rootDir>/out/',
         '<rootDir>/lib/',
+        '<rootDir>/@types/',
     ],
     testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.ts$',
     timers: 'fake',
     globals: {
         'ts-jest': {
-            diagnostics: false
+            diagnostics: true
         }
     }
 }
