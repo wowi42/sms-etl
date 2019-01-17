@@ -8,4 +8,4 @@ database_connection:
   database_name: "sample_test_db"
   dialect: "postgres"
 
-sqlfile: "/home/john/Workspace/Livinggoods/sms-etl/__tests__/samples/sample-data.sql"
+sqlfile: "sample-data.sql"

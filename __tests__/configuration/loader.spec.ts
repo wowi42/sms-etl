@@ -78,7 +78,7 @@ test('Should Get SQL Loader array', async () => {
     for (const config of sqlSetup) {
         const loader = new SQLLoader(
             config.name, config.db,
-            config.sqlFilePath,
+            path.resolve(Config.rootUri, '__tests__', 'samples', config.sqlFilePath),
             config.sqlFile
         );
 
@@ -88,8 +88,6 @@ test('Should Get SQL Loader array', async () => {
             data
         });
     }
-
-    console.log(sqlData);
 
     expect(Array.isArray(sqlData)).toBeTruthy();
     expect(sqlData.length).toBeGreaterThan(0);
@@ -113,7 +111,9 @@ test('Should Get CSV Loader array', async () => {
         if (rawConfig.type === ConfigurationTypes.CSV) {
             csvSetup.push({
                 name: rawConfig.configuration.key,
-                filestream: createReadStream(rawConfig.configuration.filepath),
+                filestream: createReadStream(
+                    path.resolve(Config.rootUri, '__tests__', 'samples', rawConfig.configuration.filepath)
+                ),
                 Reader: new File(),
             });
         } else {
@@ -132,7 +132,7 @@ test('Should Get CSV Loader array', async () => {
 
         csvData.push({
             name: config.name,
-            data: [...data]
+            data
         });
     }
 
@@ -176,7 +176,7 @@ test('Should Get HTTP Loader array', async () => {
 
         httpData.push({
             name: config.name,
-            data: [...data]
+            data
         });
     }
 
