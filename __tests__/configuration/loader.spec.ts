@@ -89,6 +89,8 @@ test('Should Get SQL Loader array', async () => {
         });
     }
 
+    console.log(sqlData);
+
     expect(Array.isArray(sqlData)).toBeTruthy();
     expect(sqlData.length).toBeGreaterThan(0);
     expect(sqlData[0].hasOwnProperty('name')).toBeTruthy();
