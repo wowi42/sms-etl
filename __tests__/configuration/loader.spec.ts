@@ -85,7 +85,7 @@ test('Should Get SQL Loader array', async () => {
         const data = await loader.loadData();
         sqlData.push({
             name: config.name,
-            data: [...data]
+            data
         });
     }
 
