@@ -5,6 +5,16 @@ import Config from './configuration/system';
 
 dotenv.config();
 
+const port = normalizePort(Config.port);
+
+app.set('port', port);
+app.set('env', process.env.NODE_ENV);
+
+const server = http.createServer(app);
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
 function normalizePort(val: number | string): number | string | boolean {
     const portN:number = (typeof val === 'string') ? parseInt(val, 10) : val;
     if (isNaN(portN)) {
@@ -41,13 +51,3 @@ function onListening(): void {
     const bind = (typeof address === 'string') ? `pipe ${address}` : `port ${address.port}`;
     console.log(`Listening on ${bind}`);
 }
-
-const port = normalizePort(Config.port);
-
-app.set('port', port);
-app.set('env', process.env.NODE_ENV);
-
-const server = http.createServer(app);
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);

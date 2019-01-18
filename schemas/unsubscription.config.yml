@@ -17,3 +17,11 @@ api_call_id:
 campaign:
   type: number
   required: true
+
+sourceType:
+    type: string
+    required: true
+
+sourceName:
+    type: string
+    required: true

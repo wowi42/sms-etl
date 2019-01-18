@@ -1,0 +1,22 @@
+/**
+ * @author John Waweru
+ * @license Livinggoods 2018
+ */
+
+const cron = require('node-cron');
+const dotenv = require('dotenv');
+
+dotenv.config();
+
+const {sqlIntegration, csvIntegration, httpIntegration} = require('./out/src/util/processor');
+
+/**
+ * Scheduled to run after every 30s
+ * */
+cron.schedule('*/45 * * * *', () => {
+    console.log('Process started');
+    sqlIntegration().
+        then(() => csvIntegration()).
+            then(() => httpIntegration()).
+            then(() => console.log('Process done!'))
+});

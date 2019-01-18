@@ -4,6 +4,7 @@
  */
 
 import * as Sequelize from 'sequelize';
+import {Log} from './log';
 
 export interface DatabaseConnectionOpts {
     host: string;
@@ -50,7 +51,7 @@ export class Database {
                 host,
                 port,
                 dialect,
-                logging: console.log,
+                logging: false,
                 native: false,
                 define: { paranoid: true, timestamps: true },
                 sync: { force: true, hooks: true, logging: true, },
@@ -62,7 +63,7 @@ export class Database {
     private async auth() {
         try {
             await this.connection.authenticate();
-            console.log(`[${this.name}]: Connection was successfully made`); // should be a log
+            Log.info(`[${this.name}]: Connection was successfully made`); // should be a log
             return true;
         } catch (e) {
             throw e;

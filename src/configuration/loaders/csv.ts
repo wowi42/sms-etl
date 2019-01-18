@@ -9,8 +9,8 @@ export class CSVLoader {
         private readonly Reader:File
     ) { }
 
-    async loadData() {
-        return await this.Reader.csv(this.filestream);
+    loadData() {
+        return this.Reader.csv(this.filestream) as Promise<any[]>;
     }
 
 }
