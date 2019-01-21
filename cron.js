@@ -14,9 +14,9 @@ const {sqlIntegration, csvIntegration, httpIntegration} = require('./out/src/uti
  * Scheduled to run after every 30s
  * */
 cron.schedule('*/45 * * * *', () => {
-    console.log('Process started');
+    Log.info('Process started');
     sqlIntegration().
         then(() => csvIntegration()).
             then(() => httpIntegration()).
-            then(() => console.log('Process done!'))
+            then(() => Log.info('Process done!'))
 });

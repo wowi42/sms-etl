@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import { Log } from '../log';
 
 export class File {
 
@@ -12,7 +13,7 @@ export class File {
                     if (!err) {
                         resolve(data);
                     } else {
-                        console.log('[FileReadError]', err.message); // should be a log
+                        Log.error('[FileReadError]', err.message); // should be a log
                         reject(err);
                     }
                 });
@@ -20,7 +21,7 @@ export class File {
     }
 
     csv(fileStream:any) {
-        console.log('Argument types are:', typeof fileStream);
+        Log.info('Argument types are:', typeof fileStream);
         const data = require('../../__tests__/samples/csv-data.json');
 
         return new Promise(resolve => resolve(data));

@@ -1,4 +1,5 @@
 import {HTTPClient} from '../../../lib/http-client';
+import { Log } from '../../../lib/log';
 
 export interface HttpAuth {
     secret:{ // API_SECRET, APP_SECRET, CLIENT_SECRET, APP_PASSWORD
@@ -52,7 +53,7 @@ export class HTTPLoader {
 
             return res.data;
         } catch (e) {
-            console.log('HTTPLoader LoadData Error', e); // should be a log
+            Log.error('HTTPLoader LoadData Error', e); // should be a log
         }
     }
 

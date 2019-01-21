@@ -1,5 +1,6 @@
 import {Database} from '../../../lib/db';
 import {File} from '../../../lib/file';
+import { Log } from '../../../lib/log';
 
 export interface DbConfig {
     host:string;
@@ -21,8 +22,8 @@ export class SQLLoader {
         try {
             sql = await this.sqlFile.reader(this.sql_file);
         } catch (e) {
-            console.log('[SQLLoader] Could not read SQL file'); // should be a log
-            console.log(e); // should be a log
+            Log.error('[SQLLoader] Could not read SQL file'); // should be a log
+            Log.error(e); // should be a log
 
             return null;
         }
@@ -34,8 +35,8 @@ export class SQLLoader {
                     nest: true,
                 });
         } catch (e) {
-            console.log('[SQLloader] Could not run query from sql file'); // should be a log
-            console.log(e); // should be a log
+            Log.error('[SQLloader] Could not run query from sql file'); // should be a log
+            Log.error(e); // should be a log
 
             return null;
         }

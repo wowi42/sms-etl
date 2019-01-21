@@ -74,13 +74,13 @@ export class Database {
         try {
             if (this.connection) {
                 return await this.connection.close().then(v => {
-                    console.log(`[${this.name}]: Connection created has been disconnected successfully`); // should be a log
+                    Log.info(`[${this.name}]: Connection created has been disconnected successfully`); // should be a log
                     return true;
                 });
             }
             return null;
         } catch (e) {
-            console.log(`[${this.name}]: Something went while disconnecting the database`); // should be a log
+            Log.error(`[${this.name}]: Something went while disconnecting the database`); // should be a log
             throw e;
         }
     }

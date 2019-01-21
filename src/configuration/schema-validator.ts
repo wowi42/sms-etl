@@ -7,6 +7,7 @@ const yamlSchemaValidator = require('yaml-schema-validator');
 import * as path from 'path';
 import * as yaml from 'yaml';
 import Config from './system';
+import { Log } from '../../lib/log';
 
 export const enum ConfigurationTypes {
     SQL,
@@ -58,8 +59,8 @@ export class SchemaValidator {
 
                 this.validConfigurations.push(config);
             } catch (e) {
-                console.log('[ConfigurationInvalid]', e.message);
-                console.log('[ConfigurationValidator]', 'Can not accept', config.path);
+                Log.error('[ConfigurationInvalid]', e.message);
+                Log.error('[ConfigurationValidator]', 'Can not accept', config.path);
                 continue;
             }
 
@@ -77,7 +78,7 @@ export class SchemaValidator {
             try {
                 file = await new File().reader(config.path);
             } catch (e) {
-                console.log('[ConfigurationLoader]', 'Skipping configuration on path', config.path); // should be a log
+                Log.error('[ConfigurationLoader]', 'Skipping configuration on path', config.path); // should be a log
                 continue;
             }
 
@@ -85,8 +86,8 @@ export class SchemaValidator {
             try {
                 processedConfig = yaml.parse(file);
             } catch (e) {
-                console.log('[YAMLParser]', e.message); // should be a log
-                console.log('[ConfigurationLoader]', 'Skipping configuration on path', config.path); // should be a log
+                Log.error('[YAMLParser]', e.message); // should be a log
+                Log.error('[ConfigurationLoader]', 'Skipping configuration on path', config.path); // should be a log
                 continue;
             }
 

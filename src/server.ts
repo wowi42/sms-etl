@@ -2,6 +2,7 @@ import {app} from './lib/api';
 import * as http from 'http';
 import * as dotenv from 'dotenv';
 import Config from './configuration/system';
+import { Log } from '../lib/log';
 
 dotenv.config();
 
@@ -49,5 +50,5 @@ function onError(error: NodeJS.ErrnoException): void {
 function onListening(): void {
     const address = server.address();
     const bind = (typeof address === 'string') ? `pipe ${address}` : `port ${address.port}`;
-    console.log(`Listening on ${bind}`);
+    Log.info(`Listening on ${bind}`);
 }
