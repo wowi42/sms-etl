@@ -72,7 +72,7 @@ export async function sqlIntegration() {
         try {
             await smsApi.subscribe(packet);
         } catch (e) {
-            Log.error(e, { logger: `SMSApi - ${packet.packet.subscriber_number}` });
+            Log.error(e.message, { logger: `SMSApi - ${packet.packet.subscriber_number}`, httpStatus: e.status });
         }
     }
 
