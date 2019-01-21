@@ -44,39 +44,28 @@ gulp.task('copy:project:files', _ => gulp.src([
     './.editorconfig'
 ]).pipe(gulp.dest('./dist')));
 
-gulp.task('run', done => {
-    const pm2Start = shelljs.exec(commands.start, {windowsHide: true});
-    if (pm2Start.stderr) {
-        console.log(`${consoleColor.red('ERROR!')} ${pm2Start.stderr}`);
-    } else {
-        console.log(`${consoleColor.blue('Log Info')} ${pm2Start.stdout}`);
-    }
-
-    done();
-});
-
 gulp.task('build', done => {
     console.log(`${consoleColor.blue('Starting build process')}: This will build the project into a tarball`);
 
     const cleanProject = shelljs.exec(commands.clean, {windowsHide: true});
     if (cleanProject.stderr) {
-        console.log(`${consoleColor.red('ERROR!')} ${cleanProject.stderr}`);
+        console.log(`[${consoleColor.red('ERROR!')}] ${cleanProject.stderr}`);
     } else {
-        console.log(`${consoleColor.blue('Log Info')} ${cleanProject.stdout}`);
+        console.log(`[${consoleColor.blue('Log Info')}] ${cleanProject.stdout}`);
     }
 
     const compileProject = shelljs.exec(commands.compile, {windowsHide: true});
     if (compileProject.stderr) {
-        console.log(`${consoleColor.red('ERROR!')} ${compileProject.stderr}`);
+        console.log(`[${consoleColor.red('ERROR!')}] ${compileProject.stderr}`);
     } else {
-        console.log(`${consoleColor.blue('Log Info')} ${compileProject.stdout}`);
+        console.log(`[${consoleColor.blue('Log Info')}] ${compileProject.stdout}`);
     }
 
     const compressBuild = shelljs.exec(commands.compress('build', 'out'), {windowsHide: true});
     if (compressBuild.stderr) {
-        console.log(`${consoleColor.red('ERROR!')} ${compressBuild.stderr}`);
+        console.log(`[${consoleColor.red('ERROR!')}] ${compressBuild.stderr}`);
     } else {
-        console.log(`${consoleColor.blue('Log Info')} ${compressBuild.stdout}`);
+        console.log(`[${consoleColor.blue('Log Info')}] ${compressBuild.stdout}`);
     }
 
     const copyProjectFiles = shelljs.exec(commands.copy('build.tar.gz'), {windowsHide: true});
