@@ -80,3 +80,6 @@ typings/
 
 out/
 @types/
+
+.pm2/
+dist/
