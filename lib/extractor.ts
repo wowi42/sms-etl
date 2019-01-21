@@ -128,7 +128,7 @@ export class Extractor {
             if (this._requirements.metadata) {
                 this._requirements.metadata.forEach(
                     k => {
-                        metadata[k.key] = k.value;
+                        metadata[k.key] = data[k.value];
                     }
                 );
             }
