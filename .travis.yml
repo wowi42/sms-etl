@@ -7,10 +7,6 @@ addons:
 
 env:
     global:
-        - secure: "" # SSH_HOST
-        - secure: "" # SSH_PASS
-        - secure: "" # SSH_USER
-        - secure: "" # SSH_PROJECT_PATH
         - PROJECT_PATH="./dist"
 
 branches:
