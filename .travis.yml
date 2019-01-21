@@ -8,6 +8,10 @@ addons:
 env:
     global:
         - PROJECT_PATH="./dist"
+        - secure: "" # SSH_HOST
+        - secure: "" # SSH_PASS
+        - secure: "" # SSH_USER
+        - secure: "" # SSH_PROJECT_PATH
 
 node_js:
     - lts/*

@@ -39,6 +39,9 @@ gulp.task('copy:project:files', _ => gulp.src([
     './README.md',
     './.travis.yml',
     './.gitignore',
+    './ecosystem.config.js',
+    './.env',
+    './.editorconfig'
 ]).pipe(gulp.dest('./dist')));
 
 gulp.task('run', done => {
