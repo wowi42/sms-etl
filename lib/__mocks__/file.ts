@@ -13,7 +13,7 @@ export class File {
                     if (!err) {
                         resolve(data);
                     } else {
-                        Log.error('[FileReadError]', err.message); // should be a log
+                        console.log('[FileReadError]', err.message); // should be a log
                         reject(err);
                     }
                 });
@@ -21,7 +21,7 @@ export class File {
     }
 
     csv(fileStream:any) {
-        Log.info('Argument types are:', typeof fileStream);
+        console.log('Argument types are:', typeof fileStream);
         const data = require('../../__tests__/samples/csv-data.json');
 
         return new Promise(resolve => resolve(data));

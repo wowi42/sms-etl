@@ -3,7 +3,7 @@ import {Log} from '../log';
 
 class MockSequelize {
     query(sql:string, opts: { raw:boolean; retry: { max:number; }; nest:boolean }) {
-        Log.info('Arguments are:', sql, opts);
+        console.log('Arguments are:', sql, opts);
         return require('../../__tests__/samples/sql-data.json');
     }
 }
@@ -23,7 +23,7 @@ class Database {
     }
 
     connect(name:string, opts:DatabaseConnectionOpts) {
-        Log.info('Inputs are: ', name, JSON.stringify(opts));
+        console.log('Inputs are: ', name, JSON.stringify(opts));
         this.connection = new MockSequelize();
     }
 
