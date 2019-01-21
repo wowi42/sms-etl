@@ -10,7 +10,6 @@ module.exports = {
                 LOG_PATH: './logs',
                 PORT: 7707
             },
-            cwd: './dist/',
             output: './.pm2/out.log',
             error: './.pm2/err.log',
             pid: './.pm2/pids',
