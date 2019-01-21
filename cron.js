@@ -5,6 +5,7 @@
 
 const cron = require('node-cron');
 const dotenv = require('dotenv');
+const { Log } = require('./out/lib/log');
 
 dotenv.config();
 
