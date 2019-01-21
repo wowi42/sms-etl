@@ -100,7 +100,7 @@ export async function csvIntegration() {
                 data: [...data]
             });
         } catch (e) {
-            Log.error(e, { logger: 'CSV Configuration Runner', Configuration: config.name });
+            Log.error(e.message, { logger: `SMSApi - ${packet.packet.subscriber_number}`, httpStatus: e.status });
         }
     }
 
@@ -133,7 +133,7 @@ export async function csvIntegration() {
         try {
             await smsApi.subscribe(packet);
         } catch (e) {
-            Log.error(e, { logger: `SMSApi - ${packet.packet.subscriber_number}` });
+            Log.error(e.message, { logger: `SMSApi - ${packet.packet.subscriber_number}`, httpStatus: e.status });
         }
     }
 
@@ -192,7 +192,7 @@ export async function httpIntegration() {
         try {
             await smsApi.subscribe(packet);
         } catch (e) {
-            Log.error(e, { logger: `SMSApi - ${packet.packet.subscriber_number}` });
+            Log.error(e.message, { logger: `SMSApi - ${packet.packet.subscriber_number}`, httpStatus: e.status });
         }
     }
 }
