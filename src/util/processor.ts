@@ -100,7 +100,7 @@ export async function csvIntegration() {
                 data: [...data]
             });
         } catch (e) {
-            Log.error(e.message, { logger: `SMSApi - ${packet.packet.subscriber_number}`, httpStatus: e.status });
+            Log.error(e, { logger: 'CSV Configuration Runner', Configuration: config.name });
         }
     }
 
