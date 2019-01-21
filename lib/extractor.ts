@@ -137,7 +137,7 @@ export class Extractor {
                 {
                     packet: {
                         campaign: this.campaign,
-                        reference_date: data[this._requirements.referenceDate],
+                        reference_date: moment(data[this._requirements.referenceDate]).format('DD/MM/YYYY'),
                         subscriber_number: data[this._requirements.subscriberPhoneNumber],
                         subscriber_type: this._requirements.typeOfSubscriber,
                         metadata: { ...metadata },
