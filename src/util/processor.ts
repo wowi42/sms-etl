@@ -71,6 +71,7 @@ export async function sqlIntegration() {
 
         try {
             await smsApi.subscribe(packet);
+            Log.info(`${packet} successfully sent`, { logger: `SMSApi - ${packet.packet.subscriber_number}` });
         } catch (e) {
             Log.error(e.message, { logger: `SMSApi - ${packet.packet.subscriber_number}`, httpStatus: e.status });
         }
@@ -132,6 +133,7 @@ export async function csvIntegration() {
 
         try {
             await smsApi.subscribe(packet);
+            Log.info(`${packet} successfully sent`, { logger: `SMSApi - ${packet.packet.subscriber_number}` });
         } catch (e) {
             Log.error(e.message, { logger: `SMSApi - ${packet.packet.subscriber_number}`, httpStatus: e.status });
         }
@@ -191,6 +193,7 @@ export async function httpIntegration() {
 
         try {
             await smsApi.subscribe(packet);
+            Log.info(`${packet} successfully sent`, { logger: `SMSApi - ${packet.packet.subscriber_number}` });
         } catch (e) {
             Log.error(e.message, { logger: `SMSApi - ${packet.packet.subscriber_number}`, httpStatus: e.status });
         }
