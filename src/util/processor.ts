@@ -72,7 +72,7 @@ export async function sqlIntegration() {
         try {
             await smsApi.subscribe(packet);
         } catch (e) {
-            Log.error(e.message || 'SMS Api request incomplete', { logger: `SMSApi - ${packet.packet.subscriber_number}` });
+            Log.error(e, { logger: `SMSApi - ${packet.packet.subscriber_number}` });
         }
     }
 
@@ -133,7 +133,7 @@ export async function csvIntegration() {
         try {
             await smsApi.subscribe(packet);
         } catch (e) {
-            Log.error(e.message || 'SMS Api request incomplete', { logger: `SMSApi - ${packet.packet.subscriber_number}` });
+            Log.error(e, { logger: `SMSApi - ${packet.packet.subscriber_number}` });
         }
     }
 
@@ -192,7 +192,7 @@ export async function httpIntegration() {
         try {
             await smsApi.subscribe(packet);
         } catch (e) {
-            Log.error(e.message || 'SMS Api request incomplete', { logger: `SMSApi - ${packet.packet.subscriber_number}` });
+            Log.error(e, { logger: `SMSApi - ${packet.packet.subscriber_number}` });
         }
     }
 }
