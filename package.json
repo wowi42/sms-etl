@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "lint": "tslint --fix --project tsconfig.json",
-    "start": "cd dist && deploy.sh",
+    "start": "cd dist && chmod +x ./deploy.sh && ./deploy.sh",
     "compile": "tsc --diagnostics && cp -r schemas out",
     "build": "gulp build"
   },

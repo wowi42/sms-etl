@@ -4,6 +4,6 @@
 
 tar -xvf build.tar.gz out;
 
-gulp run:project;
+NODE_ENV=production pm2 start --attach ecosystem.config.js;
 
 echo "DONE!";
