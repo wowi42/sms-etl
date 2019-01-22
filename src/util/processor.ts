@@ -71,7 +71,7 @@ export async function sqlIntegration() {
 
         try {
             await smsApi.subscribe(packet);
-            Log.info(`${packet} successfully sent`, Config.helpers.logger(`SMSApi`, `Packet Sent: ${packet.packet}`));
+            Log.info(`${packet} successfully sent`, Config.helpers.logger(`SMSApi`, `Packet Sent: ${JSON.stringify(packet.packet)}`));
         } catch (e) {
             Log.error(`Error occured while subscribing ${packet.packet.subscriber_number}`,
                 Config.helpers.logger('SMSApi - SQL', `Packet Sent: ${JSON.stringify(packet.packet)}`)
