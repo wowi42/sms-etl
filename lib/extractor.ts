@@ -140,7 +140,7 @@ export class Extractor {
                         reference_date: moment(data[this._requirements.referenceDate]).format('DD/MM/YYYY'),
                         subscriber_number: data[this._requirements.subscriberPhoneNumber],
                         subscriber_type: this._requirements.typeOfSubscriber,
-                        metadata: { ...metadata },
+                        metadata: JSON.stringify({ ...metadata }),
                         ...others,
                     },
                     url: `subscription/save/?ref_id=${data[this._requirements.id]}&ref_key=${this.apiCallId}`
