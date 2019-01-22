@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import { Log } from './log';
 const csv = require('fast-csv');
+import Config from '../src/configuration/system';
 
 export class File {
 
@@ -11,7 +12,7 @@ export class File {
                     if (!err) {
                         resolve(data);
                     } else {
-                        Log.error('[FileReadError]', err.message); // should be a log
+                        Log.error(err.message, Config.helpers.logger('FileReader'));
                         reject(err);
                     }
                 });

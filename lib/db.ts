@@ -5,6 +5,7 @@
 
 import * as Sequelize from 'sequelize';
 import {Log} from './log';
+import Config from '../src/configuration/system';
 
 export interface DatabaseConnectionOpts {
     host: string;
@@ -63,7 +64,7 @@ export class Database {
     private async auth() {
         try {
             await this.connection.authenticate();
-            Log.info(`[${this.name}]: Connection was successfully made`); // should be a log
+            Log.info(`[${this.name}]: Connection was successfully made`, Config.helpers.logger('Database')); // should be a log
             return true;
         } catch (e) {
             throw e;
@@ -74,13 +75,14 @@ export class Database {
         try {
             if (this.connection) {
                 return await this.connection.close().then(v => {
-                    Log.info(`[${this.name}]: Connection created has been disconnected successfully`); // should be a log
+                    Log.info(`[${this.name}]: Connection created has been disconnected successfully`, Config.helpers.logger('Database'));
                     return true;
                 });
             }
             return null;
         } catch (e) {
-            Log.error(`[${this.name}]: Something went while disconnecting the database`); // should be a log
+            Log.warn(`[${this.name}]: Something went while disconnecting the database`, Config.helpers.logger('Database'));
+            Log.error(e, Config.helpers.logger('Sequelize-Disconnect'));
             throw e;
         }
     }

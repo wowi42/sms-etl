@@ -3,6 +3,7 @@ import * as winston from 'winston';
 import Config from '../src/configuration/system';
 
 require('winston-daily-rotate-file');
+const Logsene = require('winston-logsene');
 
 export const enum LOG_LEVEL {
     critical= 'critical',
@@ -34,8 +35,9 @@ class Logger {
         switch (process.env.NODE_ENV) {
             case 'production':
                 return [
-                    this.consoleTransport(LOG_LEVEL.warn, 'PRODUCTION'),
-                    this.rotationTransport(LOG_LEVEL.error, 'SERVICE_LOAD', '28d', '10m', 'YYYY-MM-DD--ddd'),
+                    this.consoleTransport(LOG_LEVEL.error, 'console-log'),
+                    this.rotationTransport(LOG_LEVEL.error, 'integration', '28d', '10m', 'YYYY-MM-DD'),
+                    this.logScenceTransport()
                 ];
 
             default:
@@ -58,6 +60,16 @@ class Logger {
         });
     }
 
+    logScenceTransport() {
+        return new Logsene({
+            token: Config.logseneToken,
+            type: 'Integration_Logs',
+            url: 'https://logsene-receiver.eu.sematext.com/_bulk',
+            handleExceptions: true
+        });
+    }
+
+
     /**
      * log to file and use rotation mechanism archiving to zip files for old logs
      * @param {LOG_LEVEL} level
@@ -66,7 +78,7 @@ class Logger {
      * @param {string} maxSize - defaults to '2m' (2 megabytes)
      * @param {string} datePattern - use moment.js format patterns.\ defaults to 'YYYY-MMM-Do_dd' e.g 2009-Jan-23th_SU
      */
-    rotationTransport(level: LOG_LEVEL, label: string, maxFiles = '7d', maxSize = '10m', datePattern = 'YYYY-MMM-Do dd') {
+    rotationTransport(level: LOG_LEVEL, label: string, maxFiles = '7d', maxSize = '10m', datePattern = 'YY-MM-DD') {
         return new ((<any>winston.transports).DailyRotateFile)({
             level,
             datePattern,
@@ -92,8 +104,8 @@ class Logger {
             transports: this.configureTransporters(),
             exceptionHandlers: [
                 new ((<any>winston.transports).DailyRotateFile)({
-                    datePattern: 'YYYY-MMM-Do dd',
-                    filename: 'system-exceptions-%DATE%.log',
+                    datePattern: 'YY-MM-DD',
+                    filename: 'exceptions-%DATE%.log',
                     dirname: Config.logPath,
                     handleExceptions: true,
                     maxSize: '5m',

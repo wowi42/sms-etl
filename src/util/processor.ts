@@ -32,14 +32,14 @@ export async function sqlIntegration() {
 
         try {
             const data = await loader.loadData();
-            Log.info(`[${config.name}]: Data volume is ${data.length}`, {Configuration: config.name });
+            Log.info(`Data volume is ${data.length}`, Config.helpers.logger(`Reader: ${config.name}`));
 
             sqlData.push({
                 name: config.name,
                 data: [...data]
             });
         } catch (e) {
-            Log.error(e, { logger: 'SQL Configuration Runner', Configuration: config.name });
+            Log.error(e, Config.helpers.logger('SQL Configuration Runner'));
         }
     }
 
@@ -61,7 +61,7 @@ export async function sqlIntegration() {
             extractor.dataRequirements = subscription.subscriptionMap;
             packets.push(...extractor.transformSubscriptionData());
         } else {
-            Log.warning(`More than one subscription map with the name: ${extractor.configName}`, { logger: 'Extractor' });
+            Log.warning(`More than one subscription map with the name: ${extractor.configName}`, Config.helpers.logger('Extractor'));
             continue;
         }
     }
@@ -71,9 +71,11 @@ export async function sqlIntegration() {
 
         try {
             await smsApi.subscribe(packet);
-            Log.info(`${packet} successfully sent`, { logger: `SMSApi - ${packet.packet.subscriber_number}` });
+            Log.info(`${packet} successfully sent`, Config.helpers.logger(`SMSApi`, `Packet Sent: ${packet.packet}`));
         } catch (e) {
-            Log.error(e.message, { logger: `SMSApi - ${packet.packet.subscriber_number}`, httpStatus: e.status });
+            Log.error(`Error occured while subscribing ${packet.packet.subscriber_number}`,
+                Config.helpers.logger('SMSApi - SQL', `Packet Sent: ${packet.packet}`)
+            );
         }
     }
 
@@ -94,14 +96,14 @@ export async function csvIntegration() {
 
         try {
             const data = await loader.loadData();
-            Log.info(`[${config.name}]: Data volume is ${data.length}`, {Configuration: config.name });
+            Log.info(`Data volume is ${data.length}`, Config.helpers.logger(`Reader: ${config.name}`));
 
             csvData.push({
                 name: config.name,
                 data: [...data]
             });
         } catch (e) {
-            Log.error(e, { logger: 'CSV Configuration Runner', Configuration: config.name });
+            Log.error(e, Config.helpers.logger('CSV Configuration Runner'));
         }
     }
 
@@ -123,7 +125,7 @@ export async function csvIntegration() {
             extractor.dataRequirements = subscription.subscriptionMap;
             packets.push(...extractor.transformSubscriptionData());
         } else {
-            Log.warning(`More than one subscription map with the name: ${extractor.configName}`, { logger: 'Extractor' });
+            Log.warning(`More than one subscription map with the name: ${extractor.configName}`, Config.helpers.logger('Extractor'));
             continue;
         }
     }
@@ -133,9 +135,11 @@ export async function csvIntegration() {
 
         try {
             await smsApi.subscribe(packet);
-            Log.info(`${packet} successfully sent`, { logger: `SMSApi - ${packet.packet.subscriber_number}` });
+            Log.info(`${packet} successfully sent`, Config.helpers.logger(`SMSApi`, `Packet Sent: ${packet.packet}`));
         } catch (e) {
-            Log.error(e.message, { logger: `SMSApi - ${packet.packet.subscriber_number}`, httpStatus: e.status });
+            Log.error(`Error occured while subscribing ${packet.packet.subscriber_number}`,
+                Config.helpers.logger('SMSApi - CSV', `Packet Sent: ${packet.packet}`)
+            );
         }
     }
 
@@ -154,14 +158,14 @@ export async function httpIntegration() {
 
         try {
             const data = await loader.loadData();
-            Log.info(`[${config.name}]: Data volume is ${data.length}`, {Configuration: config.name });
+            Log.info(`Data volume is ${data.length}`, Config.helpers.logger(`Reader: ${config.name}`));
 
             httpData.push({
                 name: config.name,
                 data: [...data]
             });
         } catch (e) {
-            Log.error(e, { logger: 'CSV Configuration Runner', Configuration: config.name });
+            Log.error(e, Config.helpers.logger('HTTP Configuration Reader'));
         }
     }
 
@@ -183,7 +187,7 @@ export async function httpIntegration() {
             extractor.dataRequirements = subscription.subscriptionMap;
             packets.push(...extractor.transformSubscriptionData());
         } else {
-            Log.warning(`More than one subscription map with the name: ${extractor.configName}`, { logger: 'Extractor' });
+            Log.warning(`More than one subscription map with the name: ${extractor.configName}`, Config.helpers.logger('Extractor'));
             continue;
         }
     }
@@ -193,9 +197,11 @@ export async function httpIntegration() {
 
         try {
             await smsApi.subscribe(packet);
-            Log.info(`${packet} successfully sent`, { logger: `SMSApi - ${packet.packet.subscriber_number}` });
+            Log.info(`${packet} successfully sent`, Config.helpers.logger(`SMSApi`, `Packet Sent: ${packet.packet}`));
         } catch (e) {
-            Log.error(e.message, { logger: `SMSApi - ${packet.packet.subscriber_number}`, httpStatus: e.status });
+            Log.error(`Error occured while subscribing ${packet.packet.subscriber_number}`,
+                Config.helpers.logger('SMSApi - HTTP', `Packet Sent: ${packet.packet}`)
+            );
         }
     }
 }

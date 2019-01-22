@@ -12,10 +12,9 @@ dotenv.config();
 const {sqlIntegration, csvIntegration, httpIntegration} = require('./out/src/util/processor');
 
 /**
- * Scheduled to run after every 30s
+ * Scheduled to run after every 25 mins
  * */
-cron.schedule('*/1 * * * *', () => {
-    Log.info('Process started');
+cron.schedule('*/25 * * * *', () => {
     sqlIntegration().
         then(() => csvIntegration()).
             then(() => httpIntegration()).

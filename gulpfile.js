@@ -2,6 +2,7 @@ const gulp = require('gulp');
 const shelljs = require('shelljs');
 const chalk = require('chalk');
 const del = require('del');
+const runSequence = require('run-sequence');
 
 const consoleColor = {
     red: chalk.red.bold,
@@ -22,7 +23,9 @@ gulp.task('clean:project', done => {
     del([
         'out/**',
         '@types/**',
-        './dist/**'
+        './dist/**',
+        '!./dist/logs',
+        '!./dist/.pm2/',
     ])
     .then(files => {
         console.log(`${consoleColor.blue('INFO')} Number of files deleted: ${files.length}`);
@@ -43,47 +46,3 @@ gulp.task('copy:project:files', _ => gulp.src([
     './.env',
     './.editorconfig'
 ]).pipe(gulp.dest('./dist')));
-
-gulp.task('build', done => {
-    console.log(`${consoleColor.blue('Starting build process')}: This will build the project into a tarball`);
-
-    const cleanProject = shelljs.exec(commands.clean, {windowsHide: true});
-    if (cleanProject.stderr) {
-        console.log(`[${consoleColor.red('ERROR!')}] ${cleanProject.stderr}`);
-    } else {
-        console.log(`[${consoleColor.blue('Log Info')}] ${cleanProject.stdout}`);
-    }
-
-    const compileProject = shelljs.exec(commands.compile, {windowsHide: true});
-    if (compileProject.stderr) {
-        console.log(`[${consoleColor.red('ERROR!')}] ${compileProject.stderr}`);
-    } else {
-        console.log(`[${consoleColor.blue('Log Info')}] ${compileProject.stdout}`);
-    }
-
-    const compressBuild = shelljs.exec(commands.compress('build', 'out'), {windowsHide: true});
-    if (compressBuild.stderr) {
-        console.log(`[${consoleColor.red('ERROR!')}] ${compressBuild.stderr}`);
-    } else {
-        console.log(`[${consoleColor.blue('Log Info')}] ${compressBuild.stdout}`);
-    }
-
-    const copyProjectFiles = shelljs.exec(commands.copy('build.tar.gz'), {windowsHide: true});
-    if (copyProjectFiles.stderr) {
-        console.log(`${consoleColor.red('ERROR!')} ${copyProjectFiles.stderr}`);
-    } else {
-        console.log(`${consoleColor.blue('Log Info')} ${copyProjectFiles.stdout}`);
-    }
-
-    const setupProject = shelljs.exec(commands.install, {windowsHide: true});
-    if (setupProject.stderr) {
-        console.log(`${consoleColor.red('ERROR!')} ${setupProject.stderr}`);
-    } else {
-        console.log(`${consoleColor.blue('Log Info')} ${setupProject.stdout}`);
-    }
-
-    console.log(`${consoleColor.green('Finished')}`);
-    console.log(`${consoleColor.blue('Ending build process')}`);
-
-    done();
-});
