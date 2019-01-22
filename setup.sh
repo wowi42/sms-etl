@@ -7,10 +7,10 @@ export ENV=production;
 gulp clean:project;
 npm run compile;
 gulp copy:project:files;
+tar -zcf build.tar.gz out
 mv build.tar.gz dist && rm -r out
-tar -zcf $BUILD_FILENAME ${dir}
 
 # setup and run
-cd dist
-npm i --production
-pm2 start --attach ecosystem.config.j
+cd dist && npm i --production && tar -xvf build.tar.gz out && pm2 start --attach ecosystem.config.js;
+
+echo "DONE!";
