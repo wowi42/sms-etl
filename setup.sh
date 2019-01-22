@@ -11,6 +11,4 @@ tar -zcf build.tar.gz out
 mv build.tar.gz dist && rm -r out
 
 # setup and run
-cd dist && npm i --production && tar -xvf build.tar.gz out && pm2 start --attach ecosystem.config.js;
-
-echo "DONE!";
+NODE_ENV=production cd dist && npm i --production && tar -xvf build.tar.gz out && pm2 start --attach ecosystem.config.js;
