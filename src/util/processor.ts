@@ -74,7 +74,7 @@ export async function sqlIntegration() {
             Log.info(`${packet} successfully sent`, Config.helpers.logger(`SMSApi`, `Packet Sent: ${packet.packet}`));
         } catch (e) {
             Log.error(`Error occured while subscribing ${packet.packet.subscriber_number}`,
-                Config.helpers.logger('SMSApi - SQL', `Packet Sent: ${packet.packet}`)
+                Config.helpers.logger('SMSApi - SQL', `Packet Sent: ${JSON.stringify(packet.packet)}`)
             );
         }
     }
@@ -135,7 +135,7 @@ export async function csvIntegration() {
 
         try {
             await smsApi.subscribe(packet);
-            Log.info(`${packet} successfully sent`, Config.helpers.logger(`SMSApi`, `Packet Sent: ${packet.packet}`));
+            Log.info(`${packet} successfully sent`, Config.helpers.logger(`SMSApi`, `Packet Sent: ${JSON.stringify(packet.packet)}`));
         } catch (e) {
             Log.error(`Error occured while subscribing ${packet.packet.subscriber_number}`,
                 Config.helpers.logger('SMSApi - CSV', `Packet Sent: ${packet.packet}`)
@@ -200,7 +200,7 @@ export async function httpIntegration() {
             Log.info(`${packet} successfully sent`, Config.helpers.logger(`SMSApi`, `Packet Sent: ${packet.packet}`));
         } catch (e) {
             Log.error(`Error occured while subscribing ${packet.packet.subscriber_number}`,
-                Config.helpers.logger('SMSApi - HTTP', `Packet Sent: ${packet.packet}`)
+                Config.helpers.logger('SMSApi - HTTP', `Packet Sent: ${JSON.stringify(packet.packet)}`)
             );
         }
     }
