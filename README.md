@@ -6,7 +6,7 @@
 
 ### Pre-requisite
 
-In order to use the service on your server you have to understand the follow:
+In order to use the service on your server you have to understand the following:
 
 1. The service uses configurations to perform the ETL.
 2. The service uses `YAML` form of configuration (files).
