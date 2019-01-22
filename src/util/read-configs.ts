@@ -4,6 +4,7 @@ import {Log} from '../../lib/log';
 import {SqlSetupConfig, CsvSetupConfig, HttpSetupConfig} from '../configuration/loader';
 import {ConfigurationTypes, SchemaValidator} from '../configuration/schema-validator';
 import {DbConfig} from '../configuration/loaders/sql';
+import Config from '../configuration/system';
 import {Database} from '../../lib/db';
 import {File} from '../../lib/file';
 import { createReadStream } from 'fs';
@@ -26,7 +27,7 @@ export const sourceReaders = {
             dirs = await Util.readDirectory(sql);
             Log.info('Number of configuration directories: ' + dirs.length);
         } catch (e) {
-            Log.error(e, {logger: 'ReadDirectory-Cron'});
+            Log.error(e, Config.helpers.logger('ReadDirectory-Cron'));
             process.exit(1);
         }
 
@@ -45,7 +46,7 @@ export const sourceReaders = {
         try {
             processedConfig = await schemaValidator.run();
         } catch (e) {
-            Log.error(e, {logger: 'SchemaValidator - Cron'});
+            Log.error(e, Config.helpers.logger('SchemaValidator - Cron'));
         }
 
         const sqlSetup:SqlSetupConfig[] = [];
@@ -75,7 +76,7 @@ export const sourceReaders = {
                 });
 
             } catch (e) {
-                Log.error(e, {logger: 'SetupConfig', Configuration: loaderName});
+                Log.error(e, Config.helpers.logger(`SQL Config Setup: ${config.name}`));
             }
         }
 
@@ -96,7 +97,7 @@ export const sourceReaders = {
             dirs = await Util.readDirectory(csv);
             Log.info('Number of configuration directories: ' + dirs.length);
         } catch (e) {
-            Log.error(e, {logger: 'ReadDirectory-Cron'});
+            Log.error(e, Config.helpers.logger('ReadDirectory-Cron'));
             process.exit(1);
         }
 
@@ -115,7 +116,7 @@ export const sourceReaders = {
         try {
             processedConfig = await schemaValidator.run();
         } catch (e) {
-            Log.error(e, {logger: 'SchemaValidator - Cron'});
+            Log.error(e, Config.helpers.logger('SchemaValidator - Cron'));
         }
 
         const csvSetup:CsvSetupConfig[] = [];
@@ -147,7 +148,7 @@ export const sourceReaders = {
             dirs = await Util.readDirectory(http);
             Log.info('Number of configuration directories: ' + dirs.length);
         } catch (e) {
-            Log.error(e, {logger: 'ReadDirectory-Cron'});
+            Log.error(e, Config.helpers.logger('ReadDirectory-Cron'));
             process.exit(1);
         }
 
@@ -166,7 +167,7 @@ export const sourceReaders = {
         try {
             processedConfig = await schemaValidator.run();
         } catch (e) {
-            Log.error(e, {logger: 'SchemaValidator - Cron'});
+            Log.error(e, Config.helpers.logger('SchemaValidator - Cron'));
         }
 
         const httpSetup:HttpSetupConfig[] = [];
@@ -201,7 +202,7 @@ export const dataMapReaders = {
             dirs = await Util.readDirectory(subscription);
             Log.info('Number of configuration directories: ' + dirs.length);
         } catch (e) {
-            Log.error(e, {logger: 'ReadDirectory-Cron'});
+            Log.error(e, Config.helpers.logger('ReadDirectory-Cron'));
             process.exit(1);
         }
 
@@ -220,7 +221,7 @@ export const dataMapReaders = {
         try {
             processedConfig = await schemaValidator.run();
         } catch (e) {
-            Log.error(e, {logger: 'SchemaValidator - Cron'});
+            Log.error(e, Config.helpers.logger('SchemaValidator - Cron'));
         }
 
         const subscriptionConfig = [];

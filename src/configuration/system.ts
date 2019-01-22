@@ -11,8 +11,6 @@ class SystemConfig {
 
     readonly rootUri = path.resolve(__dirname, '..', '..');
 
-    readonly port = 5005;
-
     readonly logPath = process.env.LOG_PATH;
 
     readonly configPath = process.env.CONFIG_PATH;
@@ -22,6 +20,20 @@ class SystemConfig {
     readonly smsApiKey = process.env.SMS_API_KEY;
 
     readonly smsApiId = process.env.SMS_API_ID;
+
+    readonly logseneToken = process.env.LOGSCENE_TOKEN;
+
+    readonly port = process.env.PORT || 7707;
+
+    readonly helpers = {
+        logger(name: string, ...args: any[]) {
+            return {
+                loggedBy: name,
+                timeLogged: new Date().toUTCString(),
+                stack: args
+            };
+        }
+    };
 }
 
 export default new SystemConfig();

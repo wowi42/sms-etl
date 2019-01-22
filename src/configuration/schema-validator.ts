@@ -1,5 +1,4 @@
 import { File } from '../../lib/file';
-
 require('dotenv').config();
 
 const yamlSchemaValidator = require('yaml-schema-validator');
@@ -59,8 +58,7 @@ export class SchemaValidator {
 
                 this.validConfigurations.push(config);
             } catch (e) {
-                Log.error('[ConfigurationInvalid]', e.message);
-                Log.error('[ConfigurationValidator]', 'Can not accept', config.path);
+                Log.error(e, Config.helpers.logger('Configuration_SchemaValidator', `can't accept config: ${config}`));
                 continue;
             }
 
@@ -78,7 +76,9 @@ export class SchemaValidator {
             try {
                 file = await new File().reader(config.path);
             } catch (e) {
-                Log.error('[ConfigurationLoader]', 'Skipping configuration on path', config.path); // should be a log
+                Log.error(e,
+                    Config.helpers.logger('ConfigurationLoader_SchemaValidator', `Skipping configuration', ${config}`)
+                );
                 continue;
             }
 
@@ -86,8 +86,9 @@ export class SchemaValidator {
             try {
                 processedConfig = yaml.parse(file);
             } catch (e) {
-                Log.error('[YAMLParser]', e.message); // should be a log
-                Log.error('[ConfigurationLoader]', 'Skipping configuration on path', config.path); // should be a log
+                Log.error(e,
+                    Config.helpers.logger('YAMLParser_ConfigurationLoader', `Skipping configuration', ${config}`)
+                );
                 continue;
             }
 

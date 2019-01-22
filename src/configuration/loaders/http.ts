@@ -1,5 +1,6 @@
 import {HTTPClient} from '../../../lib/http-client';
 import { Log } from '../../../lib/log';
+import Config from '../system';
 
 export interface HttpAuth {
     secret:{ // API_SECRET, APP_SECRET, CLIENT_SECRET, APP_PASSWORD
@@ -53,7 +54,7 @@ export class HTTPLoader {
 
             return res.data;
         } catch (e) {
-            Log.error('HTTPLoader LoadData Error', e); // should be a log
+            Log.error(e, Config.helpers.logger('HTTPLoader'));
         }
     }
 
