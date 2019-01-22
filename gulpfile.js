@@ -24,8 +24,8 @@ gulp.task('clean:project', done => {
         'out/**',
         '@types/**',
         './dist/**',
-        '!./dist/logs/**/*',
-        '!./dist/.pm2/**/*',
+        '!./dist/logs',
+        '!./dist/.pm2',
         '!./dist/package-lock.json',
     ])
     .then(files => {
