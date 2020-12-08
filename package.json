@@ -18,7 +18,7 @@
     "compression": "1.7.3",
     "dotenv": "6.2.0",
     "express": "4.16.4",
-    "fast-csv": "2.4.1",
+    "fast-csv": "4.3.6",
     "forever": "0.15.3",
     "forever-monitor": "1.7.1",
     "helmet": "3.15.0",
